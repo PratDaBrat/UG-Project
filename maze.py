@@ -1,4 +1,4 @@
-from cell import *
+from agent import *
 import random
 
 class maze():
@@ -12,7 +12,7 @@ class maze():
 		self.e = []
 		self.final = []
 		self.path = []
-		self.plane = [[cell(i,j) for i in range(X)] for j in range (Y)]
+		self.plane = [[agent(i,j) for i in range(X)] for j in range (Y)]
 		self.display = [[" " for i in range(X)] for i in range (Y)]
 
 	def generate(self):
@@ -21,7 +21,7 @@ class maze():
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = cell(x,y,"wall") #wall
+				self.plane[y][x] = agent(x,y,"wall") #wall
 				self.walls.append(self.plane[y][x])
 				wall += 1
 
@@ -29,7 +29,7 @@ class maze():
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = cell(x,y,"start",0,True) #start
+				self.plane[y][x] = agent(x,y,"start",0,True) #start
 				self.s.append(self.plane[y][x])
 				break
 
@@ -37,7 +37,7 @@ class maze():
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = cell(x,y,"end") #end
+				self.plane[y][x] = agent(x,y,"end") #end
 				self.e.append(self.plane[y][x])
 		return self
 

@@ -6,6 +6,7 @@ class agent:
 		self.cost = cost
 		self.visited = visited
 		self.previous = None
+		self.health = 1
 
 	def __str__(self):
 		x = str(self.x)
