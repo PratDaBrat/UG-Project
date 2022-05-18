@@ -2,11 +2,11 @@ from agent import *
 import random
 
 class maze():
-	def __init__(self, X, Y, sparsity, m=1):
+	def __init__(self, X, Y, sparsity, food=1):
 		self.X = X
 		self.Y = Y
 		self.sparsity = sparsity
-		self.max = m
+		self.food = food
 		self.walls = []
 		self.s = []
 		self.e = []
@@ -33,7 +33,7 @@ class maze():
 				self.s.append(self.plane[y][x])
 				break
 
-		while len(self.e) < self.max:
+		while len(self.e) < self.food:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
