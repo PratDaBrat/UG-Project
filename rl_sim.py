@@ -2,6 +2,12 @@ from maze import *
 import numpy as np
 import time, random
 
+from keras.models import Sequential
+from keras.layers.core import Dense, Activation
+from keras.optimizers import SGD, Adam, RMSprop
+from keras.layers.advanced_activations import PReLU
+import matplotlib.pyplot as plt
+
 X,Y = 15, 15    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 food = 1
