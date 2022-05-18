@@ -1,45 +1,24 @@
 from cell import *
+from maze import *
 import random
 import time
 import heapq
 
-walls = []
-s = []
-e = []
-path = []
-X,Y = 150,150 #random.choice(range(50,100)),random.choice(range(50,100))
-W = random.random() * 10000 // 100 / 100 #0.1 #sparseness
-
-plane = [[cell(i,j) for i in range(X)] for j in range (Y)]
+X,Y = 20, 20    #random.choice(range(50,100)),random.choice(range(50,100))
+W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
+food = 2
 
 #maze generation
-wall = 0
-while wall < W*X*Y:
-	x = random.choice(range(0,X))
-	y = random.choice(range(0,Y))
-	if plane[y][x].group == None:
-		plane[y][x] = cell(x,y,"wall") #wall
-		walls.append(plane[y][x])
-		wall += 1
-
-while True:
-	x = random.choice(range(0,X))
-	y = random.choice(range(0,Y))
-	if plane[y][x].group == None:
-		plane[y][x] = cell(x,y,"start",0,True) #start
-		s.append(plane[y][x])
-		break
-
-while True:
-	x = random.choice(range(0,X))
-	y = random.choice(range(0,Y))
-	if plane[y][x].group == None:
-		plane[y][x] = cell(x,y,"end") #end
-		e.append(plane[y][x])
-		break
+m = maze(X,Y,W,food).generate()
+plane = m.plane
+walls = m.walls
+s = m.s
+e = m.e
+final = m.final
+path = m.path
 
 visited = [s[0]]
-final = []
+
 
 #helper
 def available(m, x, y):
@@ -92,7 +71,7 @@ def dijkstra():
 			unvisited = [(v.cost,v) for v in ref if not v.visited]
 			heapq.heapify(unvisited)
 
-		end = e[0]
+		end = sorted(e)[0]
 		while end.previous:
 			final.append(end.previous)
 			end = end.previous
@@ -127,22 +106,7 @@ def __main__():
 		solve = "unsolvable"	
 	else:
 		#pretty terminal visuals
-		display = [[" " for i in range(X)] for i in range (Y)]
-		for i in range(0,X):
-			for j in range(0,Y):
-				if plane[j][i] in s:
-					display[j][i] = "s"
-				elif plane[j][i] in e:
-					display[j][i] = "e"
-				elif plane[j][i] in walls:
-					display[j][i] = "⬝"
-				elif plane[j][i] in final:
-					display[j][i] = "■"
-				
-		for n,_ in enumerate(display):
-			for __ in _:
-				print(__, end=' ')
-			print()
+		m.disp()
 		solve = "solved"
 
 	print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")

@@ -1,5 +1,5 @@
 class cell:
-	def __init__(self,x,y,group=None,cost=float('inf'),visited=False):
+	def __init__(self, x, y, group=None, cost=float('inf'), visited=False):
 		self.x = x
 		self.y = y
 		self.group = group
