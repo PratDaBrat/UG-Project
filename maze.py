@@ -16,16 +16,14 @@ class maze():
 		self.display = [[" " for i in range(X)] for i in range (Y)]
 
 	def generate(self):
-		wall = 0
-		while wall < self.sparsity * self.X * self.Y:
+		while len(self.walls) < self.sparsity * self.X * self.Y:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
 				self.plane[y][x] = agent(x,y,"wall") #wall
 				self.walls.append(self.plane[y][x])
-				wall += 1
 
-		while len(self.e) <= 1:
+		while len(self.e) < 1:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
@@ -59,5 +57,5 @@ class maze():
 				print(__, end=' ')
 			print()
 
-# m = maze(50,50,0.1,3).generate()
+# m = maze(20,20,0.1,1).generate()
 # m.disp()

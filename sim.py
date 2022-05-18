@@ -1,4 +1,4 @@
-from cell import *
+from agent import *
 from maze import *
 import random
 import time
@@ -36,10 +36,10 @@ def available(m, x, y):
 # dijkstra implement (consider A* for quicker?)
 '''
 1. Determine the starting point of the grid.
-2. Record the cost of reaching that cell: 0.
-3. Find that cell’s navigable neighbors.
+2. Record the cost of reaching that agent: 0.
+3. Find that agent’s navigable neighbors.
 4. For each neighbor, record the cost of reaching the neighbor: +1.
-5. For each neighbor, repeat steps 3-5, taking care not to revisit already-visited cells.
+5. For each neighbor, repeat steps 3-5, taking care not to revisit already-visited agents.
 '''
 ## mapping costs
 def dijkstra():
