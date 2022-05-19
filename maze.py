@@ -39,9 +39,7 @@ class maze():
 			if self.plane[y][x].group == None:
 				self.plane[y][x] = agent(x,y,"end") #end
 				self.e.append(self.plane[y][x])
-		return self
 
-	def disp(self):
 		for i in range(0,self.X):
 			for j in range(0,self.Y):
 				if self.plane[j][i] in self.s:
@@ -52,31 +50,45 @@ class maze():
 					self.display[j][i] = "⬝"
 				elif self.plane[j][i] in self.final:
 					self.display[j][i] = "■"
-				
+		return self
+
+	def disp(self):				
 		for n,_ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
 			print()
 
 	def graphdisp(self):
-		self.display = [[0.9 for i in range(self.X)] for i in range (self.Y)]
+		color_map = {0: np.array([200,200,200]), 
+		1: np.array([0, 0, 0]), 
+		2: np.array([142, 245, 39]), 
+		3: np.array([245, 56, 39]), 
+		4: np.array([100, 100, 100])}
+		
+		self.display = [[color_map[0] for i in range(self.X)] for i in range (self.Y)]
+		
 		for i in range(0,self.X):
 			for j in range(0,self.Y):
 				if self.plane[j][i] in self.s:
-					self.display[j][i] = 0.5
+					self.display[j][i] = color_map[1]
 				elif self.plane[j][i] in self.e:
-					self.display[j][i] = 0.7
+					self.display[j][i] = color_map[2]
 				elif self.plane[j][i] in self.walls:
-					self.display[j][i] = 0.2 
+					self.display[j][i] = color_map[3] 
 				elif self.plane[j][i] in self.final:
-					self.display[j][i] = 0.0
+					self.display[j][i] = color_map[4]
 
-		plt.grid('on')
+		plt.grid(False)
 		ax = plt.gca()
-		ax.set_xticks(np.arange(0.5, self.Y, 1))
-		ax.set_yticks(np.arange(0.5, self.X, 1))
+		ax.set_xticks([])
+		ax.set_yticks([])
 		canvas = np.array(self.display)
-		print(canvas)
+		'''
+		for i in range(0, canvas.shape[0]):
+			for j in range(0, canvas.shape[1]):
+				c = canvas[j,i]
+				ax.text(i, j, str(c), va='center', ha='center')
+		'''
 		img = plt.imshow(canvas, interpolation='none')
 		plt.savefig('test.png')
 		return img
