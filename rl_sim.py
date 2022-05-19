@@ -22,5 +22,5 @@ final = m.final
 path = m.path
 copy = np.copy(plane)
 
-visited = [s[0]]
+visited = (s[0])
 m.disp()

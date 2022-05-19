@@ -1,5 +1,7 @@
 from agent import *
 import random
+import matplotlib.pyplot as plt
+import numpy as np
 
 class maze():
 	def __init__(self, X, Y, sparsity, food=1):
@@ -13,7 +15,7 @@ class maze():
 		self.final = []
 		self.path = []
 		self.plane = [[agent(i,j) for i in range(X)] for j in range (Y)]
-		self.display = [[" " for i in range(X)] for i in range (Y)]
+		self.display = [[' ' for i in range(X)] for i in range (Y)]
 
 	def generate(self):
 		while len(self.walls) < self.sparsity * self.X * self.Y:
@@ -40,16 +42,15 @@ class maze():
 		return self
 
 	def disp(self):
-		plane = self.generate().plane
 		for i in range(0,self.X):
 			for j in range(0,self.Y):
-				if plane[j][i] in self.s:
+				if self.plane[j][i] in self.s:
 					self.display[j][i] = "s"
-				elif plane[j][i] in self.e:
+				elif self.plane[j][i] in self.e:
 					self.display[j][i] = "e"
-				elif plane[j][i] in self.walls:
+				elif self.plane[j][i] in self.walls:
 					self.display[j][i] = "⬝"
-				elif plane[j][i] in self.final:
+				elif self.plane[j][i] in self.final:
 					self.display[j][i] = "■"
 				
 		for n,_ in enumerate(self.display):
@@ -57,5 +58,29 @@ class maze():
 				print(__, end=' ')
 			print()
 
-# m = maze(20,20,0.1,1).generate()
+	def graphdisp(self):
+		self.display = [[0.9 for i in range(self.X)] for i in range (self.Y)]
+		for i in range(0,self.X):
+			for j in range(0,self.Y):
+				if self.plane[j][i] in self.s:
+					self.display[j][i] = 0.5
+				elif self.plane[j][i] in self.e:
+					self.display[j][i] = 0.7
+				elif self.plane[j][i] in self.walls:
+					self.display[j][i] = 0.2 
+				elif self.plane[j][i] in self.final:
+					self.display[j][i] = 0.0
+
+		plt.grid('on')
+		ax = plt.gca()
+		ax.set_xticks(np.arange(0.5, self.Y, 1))
+		ax.set_yticks(np.arange(0.5, self.X, 1))
+		canvas = np.array(self.display)
+		print(canvas)
+		img = plt.imshow(canvas, interpolation='none')
+		plt.savefig('test.png')
+		return img
+
+m = maze(10,10,0.1,1).generate()
 # m.disp()
+m.graphdisp()
