@@ -5,7 +5,7 @@ import time, random
 from keras.models import Sequential
 from keras.layers.core import Dense, Activation
 from keras.optimizers import SGD, Adam, RMSprop
-from keras.layers.advanced_activations import PReLU
+import tensorflow.keras.layers.PReLU
 import matplotlib.pyplot as plt
 
 X,Y = 15, 15    #random.choice(range(50,100)),random.choice(range(50,100))
