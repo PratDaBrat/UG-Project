@@ -4,9 +4,9 @@ import random
 import time
 import heapq
 
-X,Y = 70, 70    #random.choice(range(50,100)),random.choice(range(50,100))
-W = 0.03         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-food = 5
+X,Y = 50, 50    #random.choice(range(50,100)),random.choice(range(50,100))
+W = 0.1         #random.random() * 10000 // 100 / 100  #sparseness
+food = 20
 
 #maze generation
 m = maze(X,Y,W,food).generate()
@@ -59,8 +59,7 @@ def dijkstra():
 			visited.append(cur)
 			path.append(cur)
 			cur.visited = True
-			if cur.group == "end":
-				break
+			
 			for choice in available(plane, cur.x, cur.y):
 				if choice in visited:
 					continue
@@ -68,12 +67,19 @@ def dijkstra():
 				if d < choice.cost:
 					choice.cost = d
 					choice.previous = cur
-			while len(unvisited):
-				heapq.heappop(unvisited)
-			unvisited = [(v.cost,v) for v in ref if not v.visited]
-			heapq.heapify(unvisited)
+				if choice.group == "end":
+					visited.append(choice)
+					path.append(choice)
+					choice.visited = True
+					break
+			else:
+				while len(unvisited):
+					heapq.heappop(unvisited)
+				unvisited = [(v.cost,v) for v in ref if not v.visited]
+				heapq.heapify(unvisited)
+				continue
+			break
 			
-
 		end = sorted(e)[0]
 		while end.previous:
 			final.append(end.previous)
