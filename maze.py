@@ -52,13 +52,13 @@ class maze():
 					self.display[j][i] = "■"
 		return self
 
-	def disp(self):				
+	def disp(self):             
 		for n,_ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
 			print()
 
-	def graphdisp(self):
+	def graphdisp(self,name):
 		color_map = {0: np.array([50, 20, 0]),# plain
 		1: np.array([255, 0, 0]),# agent
 		2: np.array([31, 247, 2]),# food
@@ -78,21 +78,26 @@ class maze():
 				elif self.plane[j][i] in self.final:
 					self.display[j][i] = color_map[4]
 
-		plt.grid(False)
+		plt.grid('on')
 		ax = plt.gca()
+		canvas = np.array(self.display)
 		ax.set_xticks([])
 		ax.set_yticks([])
-		canvas = np.array(self.display)
 		'''
+		ax.set_xticks(np.arange(0.5, self.X, 1))
+		ax.set_yticks(np.arange(0.5, self.Y, 1))
+		ax.set_xticklabels([])
+		ax.set_yticklabels([])
+		
 		for i in range(0, canvas.shape[0]):
 			for j in range(0, canvas.shape[1]):
 				c = canvas[j,i]
 				ax.text(i, j, str(c), va='center', ha='center')
 		'''
 		img = plt.imshow(canvas, interpolation='none')
-		plt.savefig('test.png')
+		plt.savefig(name)
 		return img
 
-# m = maze(100,50,0.05,30).generate()
+m = maze(100,100,0.05,30).generate()
 # m.disp()
-# m.graphdisp()
+m.graphdisp('tes.png')
