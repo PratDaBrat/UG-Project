@@ -59,6 +59,8 @@ def dijkstra():
 			visited.append(cur)
 			path.append(cur)
 			cur.visited = True
+			if cur.group == "end":
+				break
 			for choice in available(plane, cur.x, cur.y):
 				if choice in visited:
 					continue
@@ -70,8 +72,7 @@ def dijkstra():
 				heapq.heappop(unvisited)
 			unvisited = [(v.cost,v) for v in ref if not v.visited]
 			heapq.heapify(unvisited)
-			if cur.group == "end":
-				break
+			
 
 		end = sorted(e)[0]
 		while end.previous:
