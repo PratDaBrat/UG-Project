@@ -109,7 +109,8 @@ def __main__():
 		solve = "unsolvable"	
 	else:
 		#pretty terminal visuals
-		m.graphdisp()
+		m.graphdisp('1.png')
+		#m.disp()
 		solve = "solved"
 
 	print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
