@@ -59,11 +59,11 @@ class maze():
 			print()
 
 	def graphdisp(self):
-		color_map = {0: np.array([54, 0, 0]), 
-		1: np.array([255, 0, 0]), 
-		2: np.array([2, 173, 5]), 
-		3: np.array([2, 110, 173]), 
-		4: np.array([255, 255, 255])}
+		color_map = {0: np.array([50, 20, 0]),# plain
+		1: np.array([255, 0, 0]),# agent
+		2: np.array([31, 247, 2]),# food
+		3: np.array([2, 94, 171]),# walls
+		4: np.array([150, 150, 150])} # path
 		
 		self.display = [[color_map[0] for i in range(self.X)] for i in range (self.Y)]
 		
@@ -93,6 +93,6 @@ class maze():
 		plt.savefig('test.png')
 		return img
 
-m = maze(100,100,0.05,300).generate()
+m = maze(100,50,0.05,30).generate()
 # m.disp()
 m.graphdisp()
