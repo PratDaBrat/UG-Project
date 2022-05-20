@@ -5,8 +5,8 @@ import time
 import heapq
 
 X,Y = 70, 70    #random.choice(range(50,100)),random.choice(range(50,100))
-W = 0.3         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-food = 1
+W = 0.03         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
+food = 5
 
 #maze generation
 m = maze(X,Y,W,food).generate()
