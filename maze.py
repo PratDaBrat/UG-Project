@@ -98,6 +98,6 @@ class maze():
 		plt.savefig(name)
 		return img
 
-m = maze(100,100,0.05,30).generate()
+# m = maze(100,100,0.05,30).generate()
 # m.disp()
-m.graphdisp('tes.png')
+# m.graphdisp('tes.png')
