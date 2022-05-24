@@ -1,26 +1,42 @@
 from maze import *
 import numpy as np
 import time, random
-
-from keras.models import Sequential
-from keras.layers.core import Dense, Activation
-from keras.optimizers import SGD, Adam, RMSprop
-import tensorflow.keras.layers.PReLU
+from PIL import Image
+import cv2
 import matplotlib.pyplot as plt
+import pickle
+from matplotlib import style
+
+style.use("ggplot")
 
 X,Y = 15, 15    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-food = 1
+FOOD = 1
+
+EPISODES = 25000
+MOVE_PENALTY = -1
+ENEMY_PENALTY = -100
+FOOD_REWARD = 1
+
+epsilon = 0.9
+EPS_DECAY = 0.9998
+
+SHOW_EVERY = 5000
+
+LEARNING_RATE = 0.1
+DISCOUNT = 0.95
 
 #maze generation
-m = maze(X,Y,W,food).generate()
-plane = np.array(m.plane)
-walls = m.walls
-s = m.s
-e = m.e
-final = m.final
-path = m.path
-copy = np.copy(plane)
+M = maze(X,Y,W,FOOD).generate()
+PLANE = np.array(m.plane)
+WALLS = m.walls
+S = m.s
+E = m.e
+FINAL = m.final
+PATH = m.path
 
 visited = (s[0])
 m.disp()
+
+start_q_table = None # or filename using pickle to continue training from certain points
+
