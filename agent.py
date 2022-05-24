@@ -13,3 +13,13 @@ class agent:
 
 	def __lt__(self,other):
 		return self.cost < other.cost
+
+	def action(self,i):
+		if i == 0:
+			self.move('R')
+		elif i == 1:
+			self.move('D')
+		elif i == 2:
+			self.move('L')
+		elif i == 3:
+			self.move('U')
