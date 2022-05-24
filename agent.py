@@ -9,9 +9,7 @@ class agent:
 		self.health = 1
 
 	def __str__(self):
-		x = str(self.x)
-		y = str(self.y)
-		return x + " " + y
+		return f"{self.x}, {self.y}"
 
 	def __lt__(self,other):
 		return self.cost < other.cost
