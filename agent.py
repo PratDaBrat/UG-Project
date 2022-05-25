@@ -16,10 +16,13 @@ class agent:
 
 	def action(self,i):
 		if i == 0:
-			self.move('R')
+			self.move(x = 1, y = 0)
 		elif i == 1:
-			self.move('D')
+			self.move(x = 0, y = -1)
 		elif i == 2:
-			self.move('L')
+			self.move(x = -1, y = 0)
 		elif i == 3:
-			self.move('U')
+			self.move(x = 0, y = 1)
+
+	def move(self, x=False, y=False):
+		pass
