@@ -1,9 +1,9 @@
-from agent import *
+from Agent import *
 import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-class maze():
+class maze:
 	def __init__(self, X, Y, sparsity, food=1):
 		self.X = X
 		self.Y = Y
@@ -14,7 +14,7 @@ class maze():
 		self.e = []
 		self.final = []
 		self.path = []
-		self.plane = [[agent(i,j) for i in range(X)] for j in range (Y)]
+		self.plane = [[Agent(i,j) for i in range(X)] for j in range (Y)]
 		self.display = [[' ' for i in range(X)] for i in range (Y)]
 
 	def generate(self):
@@ -22,14 +22,14 @@ class maze():
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = agent(x,y,"wall") #wall
+				self.plane[y][x] = Agent(x,y,"wall") #wall
 				self.walls.append(self.plane[y][x])
 
-		while len(self.e) < 1:
+		while len(self.s) < 1:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = agent(x,y,"start",0,True) #start
+				self.plane[y][x] = Agent(x,y,"start",0,True) #start
 				self.s.append(self.plane[y][x])
 				break
 
@@ -37,7 +37,7 @@ class maze():
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = agent(x,y,"end") #end
+				self.plane[y][x] = Agent(x,y,"end") #end
 				self.e.append(self.plane[y][x])
 
 		for i in range(0,self.X):
@@ -52,13 +52,18 @@ class maze():
 					self.display[j][i] = "■"
 		return self
 
+	def updateAgent(self, agent):		
+		x = agent.x
+		y = agent.y
+		plane
+
 	def disp(self):             
 		for n,_ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
 			print()
 
-	def graphdisp(self,name):
+	def graphDisp(self,name):
 		color_map = {0: np.array([50, 20, 0]),# plain
 		1: np.array([255, 0, 0]),# agent
 		2: np.array([31, 247, 2]),# food

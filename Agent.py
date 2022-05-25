@@ -1,4 +1,6 @@
-class agent:
+import random
+
+class Agent:
 	def __init__(self, x, y, group=None, cost=float('inf'), visited=False):
 		self.x = x
 		self.y = y
@@ -16,13 +18,23 @@ class agent:
 
 	def action(self,i):
 		if i == 0:
-			self.move(x = 1, y = 0)
+			self.move(1,0)  #R
 		elif i == 1:
-			self.move(x = 0, y = -1)
+			self.move(0,-1) #D
 		elif i == 2:
-			self.move(x = -1, y = 0)
+			self.move(-1,0) #L
 		elif i == 3:
-			self.move(x = 0, y = 1)
+			self.move(0,1)  #U
+		else:
+			self.move()
 
-	def move(self, x=False, y=False):
-		pass
+	def move(self, x=0, y=0):
+		self.previous = Agent(self.x,self.y)
+		if x != 0 or y != 0:
+			self.x += x
+			self.y += y
+		else:
+			if random.random() * 10000 // 100 % 2:
+				self.x += random.choice([-1,1])
+			else:
+				self.y += random.choice([-1,1])
