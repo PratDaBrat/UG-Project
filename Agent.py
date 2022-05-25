@@ -20,11 +20,11 @@ class Agent:
 		if i == 0:
 			self.move(1,0)  #R
 		elif i == 1:
-			self.move(0,-1) #D
+			self.move(0,1) #D
 		elif i == 2:
 			self.move(-1,0) #L
 		elif i == 3:
-			self.move(0,1)  #U
+			self.move(0,-1)  #U
 		else:
 			self.move()
 

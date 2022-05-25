@@ -39,7 +39,11 @@ class Maze:
 			if self.plane[y][x].group == None:
 				self.plane[y][x] = Agent(x,y,"end") #end
 				self.e.append(self.plane[y][x])
+		self.generateDisp()
+		return self
 
+	def generateDisp(self):
+		self.display = [[' ' for i in range(self.X)] for i in range (self.Y)]
 		for i in range(0,self.X):
 			for j in range(0,self.Y):
 				if self.plane[j][i] in self.s:
@@ -50,14 +54,14 @@ class Maze:
 					self.display[j][i] = "⬝"
 				elif self.plane[j][i] in self.final:
 					self.display[j][i] = "■"
-		return self
+		return self.display
 
-	def updateAgent(self, agent):		
-		x = agent.x
-		y = agent.y
-		plane
+	def updateAgent(self, agent):
+		self.plane[agent.previous.y][agent.previous.x] = agent.previous
+		self.plane[agent.y][agent.x] = agent
+		self.generateDisp()
 
-	def disp(self):             
+	def disp(self):
 		for n,_ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
@@ -105,4 +109,4 @@ class Maze:
 
 # m = Maze(100,100,0.05,30).generate()
 # m.disp()
-# m.graphdisp('tes.png')
+# m.graphDisp('tes.png')
