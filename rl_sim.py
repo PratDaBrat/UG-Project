@@ -1,4 +1,4 @@
-from maze import *
+from Maze import *
 import numpy as np
 import time, random
 from PIL import Image
@@ -27,7 +27,7 @@ LEARNING_RATE = 0.1
 DISCOUNT = 0.95
 
 #maze generation
-M = maze(X,Y,W,FOOD).generate()
+M = Maze(X,Y,W,FOOD).generate()
 PLANE = np.array(m.plane)
 WALLS = m.walls
 S = m.s

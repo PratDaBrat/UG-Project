@@ -3,7 +3,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-class maze:
+class Maze:
 	def __init__(self, X, Y, sparsity, food=1):
 		self.X = X
 		self.Y = Y
@@ -103,6 +103,6 @@ class maze:
 		plt.savefig(name)
 		return img
 
-# m = maze(100,100,0.05,30).generate()
+# m = Maze(100,100,0.05,30).generate()
 # m.disp()
 # m.graphdisp('tes.png')

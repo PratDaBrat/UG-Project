@@ -1,5 +1,4 @@
-from agent import *
-from maze import *
+from Maze import *
 import random
 import time
 import heapq
@@ -9,7 +8,7 @@ W = 0.1         #random.random() * 10000 // 100 / 100  #sparseness
 food = 20
 
 #maze generation
-m = maze(X,Y,W,food).generate()
+m = Maze(X,Y,W,food).generate()
 plane = m.plane
 walls = m.walls
 s = m.s
@@ -115,7 +114,7 @@ def __main__():
 		solve = "unsolvable"	
 	else:
 		#pretty terminal visuals
-		m.graphdisp('1.png')
+		m.graphDisp('1.png')
 		#m.disp()
 		solve = "solved"
 
