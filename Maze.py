@@ -13,8 +13,8 @@ class Maze:
 		self.s = []
 		self.e = []
 		self.final = []
-		self.path = []
-		self.plane = [[Agent(i,j) for i in range(X)] for j in range (Y)]
+		self.path = set()
+		self.plane = [[Agent(i,j,travelPenalty=-1) for i in range(X)] for j in range (Y)]
 		self.display = [[' ' for i in range(X)] for i in range (Y)]
 
 	def generate(self):
@@ -22,14 +22,14 @@ class Maze:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = Agent(x,y,"wall") #wall
+				self.plane[y][x] = Agent(x,y,"wall",travelPenalty=-10) #wall
 				self.walls.append(self.plane[y][x])
 
 		while len(self.s) < 1:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = Agent(x,y,"start",0,True) #start
+				self.plane[y][x] = Agent(x,y,"start",0,True,travelPenalty=-5) #start
 				self.s.append(self.plane[y][x])
 				break
 
@@ -37,7 +37,7 @@ class Maze:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
 			if self.plane[y][x].group == None:
-				self.plane[y][x] = Agent(x,y,"end") #end
+				self.plane[y][x] = Agent(x,y,"end",travelPenalty=1) #end
 				self.e.append(self.plane[y][x])
 		self.generateDisp()
 		return self
@@ -61,14 +61,17 @@ class Maze:
 		self.plane[agent.previous.y][agent.previous.x] = agent.previous
 		self.plane[agent.y][agent.x] = agent
 		self.generateDisp()
+		return old_agent.travelPenalty
 
 	def disp(self):
+		self.generateDisp()
 		for n,_ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
 			print()
 
 	def graphDisp(self,name):
+		self.generateDisp()
 		color_map = {0: np.array([50, 20, 0]),# plain
 		1: np.array([255, 0, 0]),# agent
 		2: np.array([31, 247, 2]),# food
@@ -108,6 +111,6 @@ class Maze:
 		plt.savefig(name)
 		return img
 
-# m = Maze(100,100,0.05,30).generate()
+# m = Maze(10,10,0.1,3).generate()
 # m.disp()
 # m.graphDisp('tes.png')

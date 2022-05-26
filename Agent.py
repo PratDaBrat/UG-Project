@@ -1,12 +1,13 @@
 import random
 
 class Agent:
-	def __init__(self, x, y, group=None, cost=float('inf'), visited=False):
+	def __init__(self, x, y, group=None, cost=float('inf'), visited=False, travelPenalty=-1):
 		self.x = x
 		self.y = y
 		self.group = group
 		self.cost = cost
 		self.visited = visited
+		self.travelPenalty = travelPenalty
 		self.previous = None
 		self.health = 1
 
