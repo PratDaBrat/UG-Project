@@ -67,13 +67,13 @@ class Maze:
 		agent = self.s[0]
 		x, y = agent.x, agent.y
 		a = []
-		if x + 1 < self.X and self.plane[y][x+1] not in walls: #R
+		if x + 1 < self.X and self.plane[y][x+1] not in self.walls: #R
 			a.append(0)
-		if y + 1 < self.Y and self.plane[y+1][x] not in walls: #D
+		if y + 1 < self.Y and self.plane[y+1][x] not in self.walls: #D
 			a.append(1)
-		if x - 1 >= 0 and self.plane[y][x-1] not in walls: #L
+		if x - 1 >= 0 and self.plane[y][x-1] not in self.walls: #L
 			a.append(2)
-		if y - 1 >= 0 and self.plane[y-1][x] not in walls: #U
+		if y - 1 >= 0 and self.plane[y-1][x] not in self.walls: #U
 			a.append(3)	
 		return a
 
