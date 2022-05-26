@@ -57,6 +57,7 @@ class Maze:
 		return self.display
 
 	def updateAgent(self, agent):
+		old_agent = self.plane[agent.y][agent.x]
 		self.plane[agent.previous.y][agent.previous.x] = agent.previous
 		self.plane[agent.y][agent.x] = agent
 		self.generateDisp()
