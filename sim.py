@@ -56,7 +56,7 @@ def dijkstra():
 			uv = heapq.heappop(unvisited)
 			cur = uv[1]
 			visited.append(cur)
-			path.append(cur)
+			path.add(cur)
 			cur.visited = True
 			
 			for choice in available(plane, cur.x, cur.y):
@@ -68,7 +68,7 @@ def dijkstra():
 					choice.previous = cur
 				if choice.group == "end":
 					visited.append(choice)
-					path.append(choice)
+					path.add(choice)
 					choice.visited = True
 					break
 			else:
@@ -114,8 +114,8 @@ def __main__():
 		solve = "unsolvable"	
 	else:
 		#pretty terminal visuals
-		m.graphDisp('1.png')
-		#m.disp()
+		# m.graphDisp('1.png')
+		m.disp()
 		solve = "solved"
 
 	print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
