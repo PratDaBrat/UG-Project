@@ -63,6 +63,20 @@ class Maze:
 		self.generateDisp()
 		return old_agent.travelPenalty
 
+	def getActionSpace(self):
+		agent = self.s[0]
+		x, y = agent.x, agent.y
+		a = []
+		if x + 1 < self.X and self.plane[y][x+1] not in walls: #R
+			a.append(0)
+		if y + 1 < self.Y and self.plane[y+1][x] not in walls: #D
+			a.append(1)
+		if x - 1 >= 0 and self.plane[y][x-1] not in walls: #L
+			a.append(2)
+		if y - 1 >= 0 and self.plane[y-1][x] not in walls: #U
+			a.append(3)	
+		return a
+
 	def disp(self):
 		self.generateDisp()
 		for n,_ in enumerate(self.display):
