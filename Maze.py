@@ -120,17 +120,15 @@ class Maze:
 		canvas = np.array(self.display)
 		ax.set_xticks([])
 		ax.set_yticks([])
-		'''
-		ax.set_xticks(np.arange(0.5, self.X, 1))
-		ax.set_yticks(np.arange(0.5, self.Y, 1))
-		ax.set_xticklabels([])
-		ax.set_yticklabels([])
+		# ax.set_xticks(np.arange(0.5, self.X, 1))
+		# ax.set_yticks(np.arange(0.5, self.Y, 1))
+		# ax.set_xticklabels([])
+		# ax.set_yticklabels([])
 		
-		for i in range(0, canvas.shape[0]):
-			for j in range(0, canvas.shape[1]):
-				c = canvas[j,i]
-				ax.text(i, j, str(c), va='center', ha='center')
-		'''
+		# for i in range(0, canvas.shape[0]):
+		# 	for j in range(0, canvas.shape[1]):
+		# 		c = canvas[j,i]
+		# 		ax.text(i, j, str(c), va='center', ha='center')
 		img = plt.imshow(canvas, interpolation='none')
 		plt.savefig(name)
 		return img
