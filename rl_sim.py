@@ -9,7 +9,7 @@ from matplotlib import style
 
 style.use("ggplot")
 
-X,Y = 15, 15    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 8, 8    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 1
 
@@ -41,6 +41,20 @@ m.disp()
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
-	q_table = {}
-	for y in range(-Y+1, Y):
-		for x in range(-X+1, X):
+	# q_table = np.random.uniform(low=-10, high=1)
+	# initialise q_table
+	pass
+else:
+	with open(start_q_table, 'rb') as f:
+		q_table = pickle.load(f)
+
+episode_rewards = []
+for episode in range(EPISODES):
+	if episode % SHOW_EVERY == 0:
+		print(f'on {episode}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
+		show = True
+	else:
+		show = False
+
+	episode_reward = 0
+	# implement motion
