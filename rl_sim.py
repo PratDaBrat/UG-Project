@@ -40,3 +40,4 @@ m.disp()
 
 start_q_table = None # or filename using pickle to continue training from certain points
 
+if start_q_table is None:
