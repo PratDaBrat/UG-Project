@@ -57,6 +57,7 @@ class Maze:
 		return self.display
 
 	def updateAgent(self, agent):
+		# edge control
 		if agent.x < 0:
 			agent.x = 0
 		elif agent.x > self.X-1:
@@ -65,6 +66,7 @@ class Maze:
 			agent.y = 0
 		elif agent.y > self.Y-1:
 			agent.y = self.Y-1
+		
 		old_agent = self.plane[agent.y][agent.x]
 		self.plane[agent.previous.y][agent.previous.x] = agent.previous
 		agent.previous, self.plane[agent.y][agent.x] = self.plane[agent.y][agent.x], agent
