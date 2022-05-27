@@ -41,3 +41,6 @@ m.disp()
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
+	q_table = {}
+	for y in range(-Y+1, Y):
+		for x in range(-X+1, X):
