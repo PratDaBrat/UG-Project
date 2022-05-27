@@ -1,7 +1,7 @@
 from Maze import *
 import random
 
-X,Y,W,food = 10,10,0.1,1
+X,Y,W,food = 10,10,0.3,1
 
 m = Maze(X,Y,W,food).generate()
 a = m.s[0]
