@@ -59,7 +59,7 @@ class Maze:
 	def updateAgent(self, agent):
 		old_agent = self.plane[agent.y][agent.x]
 		self.plane[agent.previous.y][agent.previous.x] = agent.previous
-		self.plane[agent.y][agent.x] = agent
+		agent.previous, self.plane[agent.y][agent.x] = self.plane[agent.y][agent.x], agent
 		self.generateDisp()
 		return old_agent.travelPenalty
 

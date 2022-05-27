@@ -30,7 +30,8 @@ class Agent:
 			self.move()
 
 	def move(self, x=0, y=0):
-		self.previous = Agent(self.x,self.y)
+		if self.previous == None:
+			self.previous = Agent(self.x,self.y)
 		if x != 0 or y != 0:
 			self.x += x
 			self.y += y
