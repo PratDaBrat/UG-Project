@@ -40,7 +40,7 @@ class Maze:
 				self.plane[y][x] = Agent(x,y,"end",travelPenalty=1) #end
 				self.e.append(self.plane[y][x])
 		self.generateDisp()
-		self.original = [self.plane, self.display, self.walls, self.s, self.e]
+		self.original = [self, self.plane, self.display]
 		return self
 
 	def generateDisp(self):
@@ -89,7 +89,7 @@ class Maze:
 	# 	return a
 
 	def reset(self):
-		self.plane, self.display, self.walls, self.s, self.e = self.original
+		self, self.plane, self.display = self.original
 
 	def disp(self):
 		self.generateDisp()
