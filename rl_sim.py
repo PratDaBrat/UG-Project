@@ -28,20 +28,20 @@ DISCOUNT = 0.95
 
 #maze generation
 M = Maze(X,Y,W,FOOD).generate()
-PLANE = np.array(m.plane)
-WALLS = m.walls
-S = m.s
-E = m.e
-FINAL = m.final
-PATH = m.path
+PLANE = np.array(M.plane)
+WALLS = M.walls
+S = M.s
+E = M.e
+FINAL = M.final
+PATH = M.path
 
-visited = (s[0])
-m.disp()
+visited = (S[0])
+M.disp()
 
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
-	# q_table = np.random.uniform(low=-10, high=1)
+	q_table = np.random.uniform(low=-10, high=0, size=[X,Y,4])
 	# initialise q_table
 	pass
 else:
