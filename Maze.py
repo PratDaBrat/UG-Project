@@ -39,23 +39,14 @@ class Maze:
 			if self.plane[y][x].group == None:
 				self.plane[y][x] = Agent(x,y,"end",travelPenalty=1) #end
 				self.e.append(self.plane[y][x])
+		self.sinit = {}
+		self.einit = {}
+		for agent in self.s:
+			self.sinit[agent] = (agent.x, agent.y)
+		for food in self.e:
+			self.einit[food] = (food.x, food.y)
 		self.generateDisp()
-		self.original = [self, self.plane, self.display]
 		return self
-
-	def generateDisp(self):
-		self.display = [[' ' for i in range(self.X)] for i in range (self.Y)]
-		for i in range(0,self.X):
-			for j in range(0,self.Y):
-				if self.plane[j][i] in self.s:
-					self.display[j][i] = "s"
-				elif self.plane[j][i] in self.e:
-					self.display[j][i] = "e"
-				elif self.plane[j][i] in self.walls:
-					self.display[j][i] = "⬝"
-				elif self.plane[j][i] in self.final:
-					self.display[j][i] = "■"
-		return self.display
 
 	def updateAgent(self, agent):
 		# edge control
@@ -89,17 +80,35 @@ class Maze:
 	# 	return a
 
 	def reset(self):
-		self, self.plane, self.display = self.original
+		for agent in self.s:
+			agent.x, agent.y = self.sinit[agent]
+			self.updateAgent(agent)
+		for food in self.e:
+			food.x, food.y = self.einit[food]
+			self.plane[food.y][food.x] = food #for immobile food
+		self.generateDisp()
+
+	def generateDisp(self):
+		self.display = [[',' for i in range(self.X)] for i in range (self.Y)]
+		for i in range(0,self.X):
+			for j in range(0,self.Y):
+				if self.plane[j][i] in self.s:
+					self.display[j][i] = "s"
+				elif self.plane[j][i] in self.e:
+					self.display[j][i] = "e"
+				elif self.plane[j][i] in self.walls:
+					self.display[j][i] = "⬝"
+				elif self.plane[j][i] in self.final:
+					self.display[j][i] = "■"
+		return self.display
 
 	def disp(self):
-		self.generateDisp()
 		for n,_ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
 			print()
 
 	def graphDisp(self,name):
-		self.generateDisp()
 		color_map = {0: np.array([50, 20, 0]),# plain
 		1: np.array([255, 0, 0]),# agent
 		2: np.array([31, 247, 2]),# food

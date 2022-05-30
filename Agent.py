@@ -36,6 +36,7 @@ class Agent:
 			self.x += x
 			self.y += y
 		else:
+			print('random move')
 			if random.random() * 10000 // 100 % 2:
 				self.x += random.choice([-1,1])
 			else:
