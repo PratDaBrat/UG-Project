@@ -60,6 +60,7 @@ class Maze:
 			agent.y = self.Y-1
 		
 		old_agent = self.plane[agent.y][agent.x]
+		self.path.add(old_agent)
 		self.plane[agent.previous.y][agent.previous.x] = agent.previous
 		agent.previous, self.plane[agent.y][agent.x] = self.plane[agent.y][agent.x], agent
 		self.generateDisp()
@@ -80,6 +81,8 @@ class Maze:
 	# 	return a
 
 	def reset(self):
+		self.path = set()
+		self.final = []
 		for agent in self.s:
 			agent.x, agent.y = self.sinit[agent]
 			self.updateAgent(agent)
@@ -89,6 +92,7 @@ class Maze:
 
 	def generateDisp(self):
 		self.display = [[' ' for i in range(self.X)] for i in range (self.Y)]
+		self.final = list(self.path)
 		for i in range(0,self.X):
 			for j in range(0,self.Y):
 				if self.plane[j][i] in self.s:
@@ -115,7 +119,7 @@ class Maze:
 		4: np.array([150, 150, 150])} # path
 		
 		self.display = [[color_map[0] for i in range(self.X)] for i in range (self.Y)]
-		
+		self.final = list(self.path)
 		for i in range(0,self.X):
 			for j in range(0,self.Y):
 				if self.plane[j][i] in self.s:
