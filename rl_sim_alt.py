@@ -4,15 +4,15 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import pickle
-from matplotlib import style
+# from matplotlib import style
 
-style.use("ggplot")
+# style.use("ggplot")
 
-X,Y = 8, 8    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 25, 25    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 1
 
-EPISODES = 5000
+EPISODES = 10000
 MOVE_PENALTY = -1
 ENEMY_PENALTY = -10
 STAT_PENALTY = -5
@@ -21,7 +21,7 @@ FOOD_REWARD = 1
 epsilon = 0.9
 EPS_DECAY = 0.9998
 
-SHOW_EVERY = 500
+SHOW_EVERY = 2000
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
@@ -83,7 +83,7 @@ for episode in range(EPISODES):
 			new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT + max_future_q)
 			q_table[qy,qx,act] = new_q
 		else:
-			q_table[qy,qx,act] = 0
+			q_table[qy,qx,act] = 1
 
 	episode_rewards.append(episode_reward)
 	epsilon *= EPS_DECAY
@@ -96,7 +96,7 @@ moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mod
 plt.plot([i for i in range(len(moving_avg))], moving_avg)
 plt.ylabel(f'reward {SHOW_EVERY}ma')
 plt.xlabel('episode #')
-plt.savefig('rl_stats1.png')
+plt.savefig('1maze_rlstats.png')
 
-with open(f'qtables/qtable-{int(time.time())}.pickle', 'wb') as f:
+with open(f'qtables/1maze_qtable-{int(time.time())}.pickle', 'wb') as f:
 	pickle.dump(q_table, f)
