@@ -23,7 +23,7 @@ FOOD_REWARD = 1
 epsilon = 0.9
 EPS_DECAY = 0.9998
 
-SHOW_EVERY = 1000
+SHOW_EVERY = 500
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
@@ -51,11 +51,16 @@ else:
 		q_table = pickle.load(f)
 
 episode_rewards = []
-done = False
 A = S[0]
 for episode in range(EPISODES):
 	episode_reward = 0
+	if not episode % SHOW_EVERY:
+		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
+		render = True
+	else:
+		render = False
 	i = 0
+	done = False
 	while not done:
 		qx, qy = A.x, A.y
 		if np.random.random() > epsilon:
@@ -63,16 +68,23 @@ for episode in range(EPISODES):
 		else:
 			act = np.random.choice([0,1,2,3])
 		A.action(act)
-		episode_reward += M.updateAgent(A)
-		episode_rewards.append(episode_reward)
-		M.graphDisp(f'stateimages/{episode}_{i}.png')
+		reward = M.updateAgent(A) #move complete
+		if render:
+			M.graphDisp(f'stateimages/{episode}_{i}.png')
 		i += 1
+		episode_reward += reward
+		episode_rewards.append(episode_reward)
 		if A.x == E[0].x and A.y == E[0].y:
 			done = True
-			break
-	
-	if episode % SHOW_EVERY == 0:
-		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
+		if not done:
+			max_future_q = np.max(q_table[A.y,A.x])
+			cur_q = q_table[qy,qx,act]
+			new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT + max_future_q)
+			q_table[qy,qx,act] = new_q
+		else:
+			q_table[qy,qx,act] = 0
+
+	if render:
 		makeVideo(0,i,episode,f'animation{episode}.mp4')
 
 	M.reset()
