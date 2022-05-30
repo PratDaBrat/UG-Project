@@ -86,7 +86,6 @@ class Maze:
 		for food in self.e:
 			food.x, food.y = self.einit[food]
 			self.plane[food.y][food.x] = food #for immobile food
-		self.generateDisp()
 
 	def generateDisp(self):
 		self.display = [[',' for i in range(self.X)] for i in range (self.Y)]
