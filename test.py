@@ -20,18 +20,11 @@ while i <= 50:
 	# m.disp()
 	# print(m.getActionSpace())
 	M.graphDisp(f'stateimages/{i}.png')
-	if A.x <= 15 and A.y <= 15:
-		A.action(random.choice([0,1]))
-	elif A.x > 15 and A.y > 15:
-		A.action(random.choice([2,3]))
-	elif A.x <= 15 and A.y > 15:
-		A.action(random.choice([3,1]))
-	if A.x > 15 and A.y <= 15:
-		A.action(random.choice([0,2]))
+	A.action(random.choice([0,1,2,3]))
 	travel.append(M.updateAgent(A))
 	i += 1
 	if i % RESET == 0:
 		M.reset()
-		makeVideo((i//RESET - 1)*RESET,i,f'animation{i}.mp4')
 print(travel)
 print(sum(travel))
+makeVideo(0,50)
