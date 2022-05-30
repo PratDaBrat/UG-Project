@@ -1,4 +1,5 @@
 from Maze import *
+from animate import makeVideo
 import numpy as np
 import time, random
 from PIL import Image
@@ -53,23 +54,26 @@ episode_rewards = []
 done = False
 A = S[0]
 for episode in range(EPISODES):
-	if episode % SHOW_EVERY == 0:
-		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
-		show = True
-	else:
-		show = False
-
 	episode_reward = 0
-	M.reset()
+	i = 0
 	while not done:
+		qx, qy = A.x, A.y
 		if np.random.random() > epsilon:
-			act = np.argmax(q_table[A.y,A.x])
+			act = np.argmax(q_table[qy,qx])
 		else:
 			act = np.random.choice([0,1,2,3])
 		A.action(act)
 		episode_reward += M.updateAgent(A)
+		episode_rewards.append(episode_reward)
+		M.graphDisp(f'stateimages/{episode}_{i}.png')
+		i += 1
 		if A.x == E[0].x and A.y == E[0].y:
 			done = True
 			break
+	
+	if episode % SHOW_EVERY == 0:
+		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
+		makeVideo(0,i,episode,f'animation{episode}.mp4')
 
+	M.reset()
 	# implement motion
