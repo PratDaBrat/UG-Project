@@ -1,10 +1,8 @@
 from Maze import *
 from animate import makeVideo
 import numpy as np
-import time, random
-from PIL import Image
-# import cv2
-# import matplotlib.pyplot as plt
+import time
+import matplotlib.pyplot as plt
 import pickle
 from matplotlib import style
 
@@ -27,19 +25,7 @@ SHOW_EVERY = 500
 
 LEARNING_RATE = 0.1
 DISCOUNT = 0.95
-
-#maze generation
-M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
-PLANE = np.array(M.plane)
-WALLS = M.walls
-S = M.s
-E = M.e
-FINAL = M.final
-PATH = M.path
-
-visited = (S[0])
-M.disp()
-
+# another method where generate maze outside and rl on same maze with reset
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
@@ -51,8 +37,16 @@ else:
 		q_table = pickle.load(f)
 
 episode_rewards = []
-A = S[0]
+
 for episode in range(EPISODES):
+	
+	#maze generation
+	M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
+	S = M.s
+	E = M.e
+	M.disp()
+	A = S[0]
+
 	episode_reward = 0
 	if not episode % SHOW_EVERY:
 		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
@@ -67,15 +61,18 @@ for episode in range(EPISODES):
 			act = np.argmax(q_table[qy,qx])
 		else:
 			act = np.random.choice([0,1,2,3])
+		
 		A.action(act)
 		reward = M.updateAgent(A) #move complete
+		
 		if render:
 			M.graphDisp(f'stateimages/{episode}_{i}.png')
 		i += 1
 		episode_reward += reward
-		episode_rewards.append(episode_reward)
+		
 		if A.x == E[0].x and A.y == E[0].y:
 			done = True
+		
 		if not done:
 			max_future_q = np.max(q_table[A.y,A.x])
 			cur_q = q_table[qy,qx,act]
@@ -84,8 +81,17 @@ for episode in range(EPISODES):
 		else:
 			q_table[qy,qx,act] = 0
 
+	episode_rewards.append(episode_reward)
+	epsilon *= EPS_DECAY
 	if render:
 		makeVideo(0,i,episode,f'animation{episode}.mp4')
 
-	M.reset()
-	# implement motion
+moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
+
+plt.plot([i for i in range(len(moving_avg))], moving_avg)
+plt.ylabel(f'reward {SHOW_EVERY}ma')
+plt.xlabel('episode #')
+plt.savefig('rl_stats.png')
+
+with open(f'qtables/qtable-{int(time.time())}.pickle', 'wb') as f:
+	pickle.dump(q_table, f)
