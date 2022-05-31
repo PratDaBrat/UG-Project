@@ -8,13 +8,13 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 15, 15    #random.choice(range(50,100)),random.choice(range(50,100))
-W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-FOOD = 1
+X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
+W = 0.2         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
+FOOD = 3
 
 EPISODES = 25000
-MOVE_PENALTY = -1
-ENEMY_PENALTY = -10
+MOVE_PENALTY = -2
+ENEMY_PENALTY = -20
 STAT_PENALTY = -5
 FOOD_REWARD = 1
 
@@ -23,7 +23,7 @@ EPS_DECAY = 0.998
 
 SHOW_EVERY = 1000
 
-LEARNING_RATE = 0.2
+LEARNING_RATE = 0.3
 DISCOUNT = 0.95
 
 #maze generation
@@ -74,7 +74,7 @@ for episode in range(EPISODES+1):
 		i += 1
 		episode_reward += reward
 		
-		if A.x == E[0].x and A.y == E[0].y:
+		if any((A.x,A.y) == (e.x,e.y) for e in E):
 			done = True
 		
 		if not done:
