@@ -8,7 +8,7 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 25, 25    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 20, 20    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 1
 
