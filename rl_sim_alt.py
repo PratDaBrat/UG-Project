@@ -8,7 +8,7 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 25, 25    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 12, 12    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 1
 
@@ -41,7 +41,7 @@ M.disp()
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
-	q_table = np.random.uniform(low=-10, high=0, size=[X,Y,4])
+	q_table = np.zeros(shape=[X,Y,4]) #with zeros to discourage repeating moves
 	# initialise q_table
 	pass
 else:
@@ -96,7 +96,7 @@ moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mod
 plt.plot([i for i in range(len(moving_avg))], moving_avg)
 plt.ylabel(f'reward {SHOW_EVERY}ma')
 plt.xlabel('episode #')
-plt.savefig('1maze_rlstats.png')
+plt.savefig('data/1maze_rlstats.png')
 
 with open(f'qtables/1maze_qtable-{int(time.time())}.pickle', 'wb') as f:
 	pickle.dump(q_table, f)
