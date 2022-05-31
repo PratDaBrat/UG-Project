@@ -8,11 +8,11 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 20, 20    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.2         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 3
 
-EPISODES = 25000
+EPISODES = 5000
 MOVE_PENALTY = -2
 ENEMY_PENALTY = -20
 STAT_PENALTY = -5
@@ -21,7 +21,7 @@ FOOD_REWARD = 1
 epsilon = 0.8
 EPS_DECAY = 0.998
 
-SHOW_EVERY = 1000
+SHOW_EVERY = 200
 
 LEARNING_RATE = 0.3
 DISCOUNT = 0.95
@@ -41,7 +41,7 @@ M.disp()
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
-	q_table = np.zeros(shape=[X,Y,4]) #with zeros to discourage repeating moves
+	q_table = np.random.uniform(high=0,low=-10,size=[X,Y,4]) #with zeros to discourage repeating moves
 	# initialise q_table
 	pass
 else:
