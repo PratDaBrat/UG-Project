@@ -31,7 +31,7 @@ class Maze:
 			if self.plane[y][x].group == None:
 				self.plane[y][x] = Agent(x,y,"start",0,True,travelPenalty=StatPenalty) #start
 				self.s.append(self.plane[y][x])
-				break
+				self.path.add(self.plane[y][x])
 
 		while len(self.e) < self.food:
 			x = random.choice(range(0,self.X))
