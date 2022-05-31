@@ -8,7 +8,7 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 8, 8    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 1
 
@@ -38,7 +38,7 @@ else:
 
 episode_rewards = []
 
-for episode in range(EPISODES):
+for episode in range(EPISODES+1):
 	
 	#maze generation
 	M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
@@ -91,7 +91,7 @@ moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mod
 plt.plot([i for i in range(len(moving_avg))], moving_avg)
 plt.ylabel(f'reward {SHOW_EVERY}ma')
 plt.xlabel('episode #')
-plt.savefig('rl_stats.png')
+plt.savefig('data/nmaze_test1_rlstats.png')
 
 with open(f'qtables/qtable-{int(time.time())}.pickle', 'wb') as f:
 	pickle.dump(q_table, f)
