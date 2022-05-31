@@ -4,9 +4,9 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import pickle
-from matplotlib import style
+# from matplotlib import style
 
-style.use("ggplot")
+# style.use("ggplot")
 
 X,Y = 8, 8    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
