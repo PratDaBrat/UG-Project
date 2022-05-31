@@ -96,7 +96,7 @@ moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mod
 plt.plot([i for i in range(len(moving_avg))], moving_avg)
 plt.ylabel(f'reward {SHOW_EVERY}ma')
 plt.xlabel('episode #')
-plt.savefig('data/1maze_rlstats.png')
+plt.savefig('data/1maze_test2_rlstats.png')
 
 with open(f'qtables/1maze_qtable-{int(time.time())}.pickle', 'wb') as f:
 	pickle.dump(q_table, f)
