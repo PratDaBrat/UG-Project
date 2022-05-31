@@ -98,5 +98,5 @@ plt.ylabel(f'reward {SHOW_EVERY}ma')
 plt.xlabel('episode #')
 plt.savefig('data/1maze_test2_rlstats.png')
 
-with open(f'qtables/1maze_qtable-{int(time.time())}.pickle', 'wb') as f:
+with open(f'qtables/1maze_qtable{X}x{Y}-{int(time.time())}.pickle', 'wb') as f:
 	pickle.dump(q_table, f)
