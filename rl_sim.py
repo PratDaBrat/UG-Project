@@ -76,7 +76,7 @@ for episode in range(EPISODES+1):
 		if not done:
 			max_future_q = np.max(q_table[A.y,A.x])
 			cur_q = q_table[qy,qx,act]
-			new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT + max_future_q)
+			new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
 			q_table[qy,qx,act] = new_q
 		else:
 			q_table[qy,qx,act] = 0
