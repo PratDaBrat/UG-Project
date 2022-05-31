@@ -8,22 +8,22 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 12, 12    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 25, 25    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 1
 
-EPISODES = 10000
+EPISODES = 25000
 MOVE_PENALTY = -1
 ENEMY_PENALTY = -10
 STAT_PENALTY = -5
 FOOD_REWARD = 1
 
 epsilon = 0.9
-EPS_DECAY = 0.9998
+EPS_DECAY = 0.98
 
-SHOW_EVERY = 2000
+SHOW_EVERY = 1000
 
-LEARNING_RATE = 0.1
+LEARNING_RATE = 0.2
 DISCOUNT = 0.95
 
 #maze generation
@@ -50,7 +50,7 @@ else:
 
 episode_rewards = []
 A = S[0]
-for episode in range(EPISODES):
+for episode in range(EPISODES+1):
 	episode_reward = 0
 	if not episode % SHOW_EVERY:
 		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
