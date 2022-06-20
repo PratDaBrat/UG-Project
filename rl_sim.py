@@ -1,5 +1,6 @@
 from Maze import *
 from animate import makeVideo
+from constants import *
 import numpy as np
 import time
 import matplotlib.pyplot as plt
@@ -8,28 +9,22 @@ import pickle
 
 # style.use("ggplot")
 
-X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
-W = 0.1         #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-FOOD = 1
+#maze generation
+M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
+PLANE = np.array(M.plane)
+WALLS = M.walls
+S = M.s
+E = M.e
+FINAL = M.final
+PATH = M.path
 
-EPISODES = 5000
-MOVE_PENALTY = -1
-ENEMY_PENALTY = -10
-STAT_PENALTY = -5
-FOOD_REWARD = 1
+visited = (S[0])
+M.disp()
 
-epsilon = 0.9
-EPS_DECAY = 0.9998
-
-SHOW_EVERY = 500
-
-LEARNING_RATE = 0.1
-DISCOUNT = 0.95
-# another method where generate maze outside and rl on same maze with reset
 start_q_table = None # or filename using pickle to continue training from certain points
 
 if start_q_table is None:
-	q_table = np.random.uniform(low=-10, high=0, size=[X,Y,4])
+	q_table = np.random.uniform(high=0,low=-10,size=[X,Y,4]) #with zeros to discourage repeating moves
 	# initialise q_table
 	pass
 else:
@@ -37,16 +32,8 @@ else:
 		q_table = pickle.load(f)
 
 episode_rewards = []
-
+A = S[0]
 for episode in range(EPISODES+1):
-	
-	#maze generation
-	M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
-	S = M.s
-	E = M.e
-	M.disp()
-	A = S[0]
-
 	episode_reward = 0
 	if not episode % SHOW_EVERY:
 		print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
@@ -70,7 +57,7 @@ for episode in range(EPISODES+1):
 		i += 1
 		episode_reward += reward
 		
-		if A.x == E[0].x and A.y == E[0].y:
+		if any((A.x,A.y) == (e.x,e.y) for e in E):
 			done = True
 		
 		if not done:
@@ -79,19 +66,20 @@ for episode in range(EPISODES+1):
 			new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
 			q_table[qy,qx,act] = new_q
 		else:
-			q_table[qy,qx,act] = 0
+			q_table[qy,qx,act] = 1
 
 	episode_rewards.append(episode_reward)
 	epsilon *= EPS_DECAY
 	if render:
 		makeVideo(0,i,episode,f'animation{episode}.mp4')
+	M.reset()
 
 moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
 plt.plot([i for i in range(len(moving_avg))], moving_avg)
 plt.ylabel(f'reward {SHOW_EVERY}ma')
 plt.xlabel('episode #')
-plt.savefig('data/nmaze_test1_rlstats.png')
+plt.savefig('data/1maze_test4_rlstats.png')
 
-with open(f'qtables/nmaze_qtable-{int(time.time())}.pickle', 'wb') as f:
+with open(f'qtables/1maze_qtable{X}x{Y}-{int(time.time())}.pickle', 'wb') as f:
 	pickle.dump(q_table, f)
