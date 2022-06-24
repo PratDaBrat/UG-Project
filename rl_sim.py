@@ -66,7 +66,7 @@ def RL(M,session):
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
 		if render:
-			makeVideo(0,i,episode,session,f'{session}animation{episode}.mp4')
+			makeVideo(0,i,episode,session,f'animations/{session}animation{episode}.mp4')
 		M.reset()
 
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')

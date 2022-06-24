@@ -14,7 +14,7 @@ def main(args):
 	os.mkdir(f'session{SESSIONID}/qtables')
 
 	#maze generation
-	maze_path = 'session1656077326/maze.pickle'
+	maze_path = None #'session1656077326/maze.pickle'
 	if maze_path is None:
 		M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)	
 	else:
