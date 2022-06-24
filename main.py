@@ -14,10 +14,16 @@ def main(args):
 	os.mkdir(f'session{SESSIONID}/qtables')
 
 	#maze generation
-	M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
+	maze_path = 'session1656077326/maze.pickle'
+	if maze_path is None:
+		M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)	
+	else:
+		with open(maze_path,'rb') as f:
+			M = pickle.load(f)
 	# M.disp()
+
 	if '-s' in args:
-		with open(f'session{session}/maze.pickle', 'wb') as f:
+		with open(f'session{SESSIONID}/maze.pickle', 'wb') as f:
 			pickle.dump(M,f)
 
 	try:

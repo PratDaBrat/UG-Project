@@ -11,6 +11,7 @@ import pickle
 
 def RL(M,session):
 	S = M.s
+	E = M.e
 	epsilon = 0.85
 	start_q_table = None # or filename using pickle to continue training from certain points
 
