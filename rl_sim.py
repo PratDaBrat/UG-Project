@@ -11,7 +11,7 @@ import pickle
 
 def RL(M,session):
 	S = M.s
-	epsilon = epsilon
+	epsilon = 0.85
 	start_q_table = None # or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
