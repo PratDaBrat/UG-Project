@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os, shutil, sys, time
 from rl_sim import *
+import pickle
 
 def main(args):
 	PERSISTENCE = False
@@ -15,6 +16,10 @@ def main(args):
 	#maze generation
 	M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
 	# M.disp()
+	if '-s' in args:
+		with open(f'session{session}/maze.pickle', 'wb') as f:
+			pickle.dump(M,f)
+
 	try:
 		RL(M,SESSIONID)
 		if not PERSISTENCE:

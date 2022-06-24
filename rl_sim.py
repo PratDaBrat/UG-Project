@@ -48,18 +48,19 @@ def RL(M,session):
 				M.graphDisp(f'session{session}/stateimages/{episode}_{i}.png')
 			i += 1
 			episode_reward += reward
-			
-			# if any((A.x,A.y) == (e.x,e.y) for e in E):
-			# 	done = True
+
 			if steps > 200:  #temp
+				done = True
+			elif any((A.x,A.y) == (e.x,e.y) for e in E):
 				done = True
 			if not done:
 				max_future_q = np.max(q_table[A.y,A.x])
 				cur_q = q_table[qy,qx,act]
 				new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
 				q_table[qy,qx,act] = new_q
-			# else:
-			# 	q_table[qy,qx,act] = 1
+				steps += 1
+			else:
+				q_table[qy,qx,act] = 1
 
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
@@ -74,5 +75,5 @@ def RL(M,session):
 	# plt.xlabel('episode #')
 	# plt.savefig('data/{session}rlstats.png')
 
-	with open(f'session{session}/qtables/1maze_qtable{X}x{Y}-{int(time.time())}.pickle', 'wb') as f:
+	with open(f'session{session}/qtables/qtable{X}x{Y}-{int(time.time())}.pickle', 'wb') as f:
 		pickle.dump(q_table, f)
