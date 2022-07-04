@@ -9,9 +9,10 @@ import pickle
 
 # style.use("ggplot")
 
-def RL(M,session):
+def RL(M,session,L):
 	S = M.s
 	E = M.e
+	LEARNING_RATE = L
 	epsilon = 0.85
 	start_q_table = None # or filename using pickle to continue training from certain points
 
@@ -25,6 +26,8 @@ def RL(M,session):
 
 	episode_rewards = []
 	A = S[0]
+	completed_count = 0
+	min_steps = float('inf')
 	for episode in range(EPISODES+1):
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
@@ -50,10 +53,12 @@ def RL(M,session):
 			i += 1
 			episode_reward += reward
 
-			if steps > 200:  #temp
+			if steps > 500:  #temp
 				done = True
+				completed_count = 0
 			elif any((A.x,A.y) == (e.x,e.y) for e in E):
 				done = True
+				completed_count += 1
 			if not done:
 				max_future_q = np.max(q_table[A.y,A.x])
 				cur_q = q_table[qy,qx,act]
@@ -63,10 +68,14 @@ def RL(M,session):
 			else:
 				q_table[qy,qx,act] = 1
 
+		min_steps = steps if steps < min_steps else min_steps
+		if completed_count == 5 and min_steps == len(M.path):
+			print(LEARNING_RATE,episode)
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
 		if render:
-			makeVideo(0,i,episode,session,f'animations/{session}animation{episode}.mp4')
+			makeVideo(0,i,episode,session,f'session{session}/animations/{session}animation{episode}.mp4')
+			shutil.rmtree(f'session{session}/stateimages/')
 		M.reset()
 
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')

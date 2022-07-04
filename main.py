@@ -26,13 +26,14 @@ def main(args):
 		with open(f'session{SESSIONID}/maze.pickle', 'wb') as f:
 			pickle.dump(M,f)
 
-	try:
-		RL(M,SESSIONID)
-		if not PERSISTENCE:
-			shutil.rmtree(f'session{SESSIONID}')
-	except:
-		if not PERSISTENCE:
-			shutil.rmtree(f'session{SESSIONID}')
+	for l in range(11):
+		try:
+			RL(M,SESSIONID,l/10)
+			if not PERSISTENCE:
+				shutil.rmtree(f'session{SESSIONID}')
+		except:
+			if not PERSISTENCE:
+				shutil.rmtree(f'session{SESSIONID}')
 
 	return 0
 
