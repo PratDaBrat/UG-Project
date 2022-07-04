@@ -1,7 +1,7 @@
 import cv2
 
 def makeVideo(z,n,episode,session,name='animation.mp4'):
-	fourcc  = cv2.VideoWriter_fourcc('M','J','P','G')
+	fourcc  = cv2.VideoWriter_fourcc(*'mp4v')
 	out = cv2.VideoWriter(name, fourcc, 10.0, (640,480))
 	for i in range(z,n): #no.of images
 		img_path = f'session{session}/stateimages/{episode}_{i}.png'

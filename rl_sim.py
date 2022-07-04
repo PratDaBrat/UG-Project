@@ -2,7 +2,7 @@ from Maze import *
 from animate import makeVideo
 from constants import *
 import numpy as np
-import time
+import time, os
 # import matplotlib.pyplot as plt
 import pickle
 # from matplotlib import style
@@ -37,7 +37,6 @@ def RL(M,session,L):
 			render = False
 		i = 0
 		done = False
-		steps = 0 #temp
 		while not done:
 			qx, qy = A.x, A.y
 			if np.random.random() > epsilon:
@@ -53,7 +52,7 @@ def RL(M,session,L):
 			i += 1
 			episode_reward += reward
 
-			if steps > 500:  #temp
+			if i > MAX_STEPS:
 				done = True
 				completed_count = 0
 			elif any((A.x,A.y) == (e.x,e.y) for e in E):
@@ -64,18 +63,17 @@ def RL(M,session,L):
 				cur_q = q_table[qy,qx,act]
 				new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
 				q_table[qy,qx,act] = new_q
-				steps += 1
 			else:
 				q_table[qy,qx,act] = 1
 
-		min_steps = steps if steps < min_steps else min_steps
+		min_steps = i if i < min_steps else min_steps
 		if completed_count == 5 and min_steps == len(M.path):
 			print(LEARNING_RATE,episode)
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
 		if render:
 			makeVideo(0,i,episode,session,f'session{session}/animations/{session}animation{episode}.mp4')
-			shutil.rmtree(f'session{session}/stateimages/')
+			os.system(f'rm -rf session{session}/stateimages/*')
 		M.reset()
 
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')

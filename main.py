@@ -12,6 +12,7 @@ def main(args):
 	os.mkdir(f'session{SESSIONID}')
 	os.mkdir(f'session{SESSIONID}/stateimages')
 	os.mkdir(f'session{SESSIONID}/qtables')
+	os.mkdir(f'session{SESSIONID}/animations')
 
 	#maze generation
 	maze_path = None #'session1656077326/maze.pickle'
