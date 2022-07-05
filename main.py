@@ -27,7 +27,7 @@ def main(args):
 		with open(f'session{SESSIONID}/maze.pickle', 'wb') as f:
 			pickle.dump(M,f)
 
-	for l in range(11):
+	for l in reversed(range(1,11)):
 		try:
 			RL(M,SESSIONID,l/10)
 			if not PERSISTENCE:
