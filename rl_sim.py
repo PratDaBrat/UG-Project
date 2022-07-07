@@ -9,7 +9,7 @@ import pickle
 
 # style.use("ggplot")
 
-def RL(M,session,L):
+def RL(M,session,L=LEARNING_RATE):
 	S = M.s
 	E = M.e
 	LEARNING_RATE = L
@@ -28,6 +28,7 @@ def RL(M,session,L):
 	A = S[0]
 	completed_count = 0
 	min_steps = float('inf')
+
 	for episode in range(EPISODES+1):
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
@@ -57,7 +58,11 @@ def RL(M,session,L):
 				completed_count = 0
 			elif any((A.x,A.y) == (e.x,e.y) for e in E):
 				done = True
+				r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
+				M.einit.pop(*r)
+				M.sinit[A] = (A.x,A.y)
 				completed_count += 1
+			
 			if not done:
 				max_future_q = np.max(q_table[A.y,A.x])
 				cur_q = q_table[qy,qx,act]
