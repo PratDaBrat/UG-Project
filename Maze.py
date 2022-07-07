@@ -67,7 +67,7 @@ class Maze:
 		self.generateDisp()
 		return old_agent.travelPenalty
 
-	def reset(self,rtype):
+	def reset(self):
 		self.path = set()
 		self.final = []
 		for agent in self.s:

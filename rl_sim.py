@@ -14,7 +14,7 @@ def RL(M,session,L=LEARNING_RATE):
 	E = M.e
 	LEARNING_RATE = L
 	epsilon = 0.85
-	start_q_table = None # or filename using pickle to continue training from certain points
+	start_q_table = 'session1657038993/qtables/qtable50x50-1657093782.pickle' # or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
 		q_table = np.random.uniform(high=0,low=-10,size=[X,Y,4]) #with zeros to discourage repeating moves
@@ -38,7 +38,7 @@ def RL(M,session,L=LEARNING_RATE):
 			render = False
 		i = 0
 		done = False
-		while not done:
+		while not done and len(E) > 0:
 			qx, qy = A.x, A.y
 			if np.random.random() > epsilon:
 				act = np.argmax(q_table[qy,qx])
@@ -60,6 +60,7 @@ def RL(M,session,L=LEARNING_RATE):
 				done = True
 				r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
 				M.einit.pop(*r)
+				E.remove(*r)
 				M.sinit[A] = (A.x,A.y)
 				completed_count += 1
 			
@@ -79,7 +80,10 @@ def RL(M,session,L=LEARNING_RATE):
 		if render:
 			makeVideo(0,i,episode,session,f'session{session}/animations/{L}animation{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
-		M.reset()
+		try:
+			M.reset()
+		except Exception as e:
+			print('exception: ',e)
 
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
