@@ -8,7 +8,7 @@ ENEMY_PENALTY = -100
 STAT_PENALTY = -5
 FOOD_REWARD = 10
 
-epsilon = 0.6 #0.85
+epsilon = 0.85
 EPS_DECAY = 0.998
 
 SHOW_EVERY = 100

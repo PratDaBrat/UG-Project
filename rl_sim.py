@@ -32,7 +32,6 @@ def RL(M,session,L=LEARNING_RATE):
 	for episode in range(EPISODES+1):
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
-			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 			render = True
 		else:
 			render = False
@@ -80,6 +79,7 @@ def RL(M,session,L=LEARNING_RATE):
 		if render:
 			makeVideo(0,i,episode,session,f'session{session}/animations/{L}animation{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
+			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 		try:
 			M.reset()
 		except Exception as e:
