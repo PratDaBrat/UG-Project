@@ -39,6 +39,7 @@ class Maze:
 			if self.plane[y][x].group == None:
 				self.plane[y][x] = Agent(x,y,"end",travelPenalty=FoodReward) #end
 				self.e.append(self.plane[y][x])
+		
 		self.sinit = {}
 		self.einit = {}
 		for agent in self.s:
@@ -66,21 +67,7 @@ class Maze:
 		self.generateDisp()
 		return old_agent.travelPenalty
 
-	# def getActionSpace(self):
-	# 	agent = self.s[0]
-	# 	x, y = agent.x, agent.y
-	# 	a = []
-	# 	if x + 1 < self.X: #and self.plane[y][x+1] not in self.walls: #R portion of code commented to enable toxin traversal at heavy penalty
-	# 		a.append(0)
-	# 	if y + 1 < self.Y: #and self.plane[y+1][x] not in self.walls: #D
-	# 		a.append(1)
-	# 	if x - 1 >= 0: #and self.plane[y][x-1] not in self.walls: #L
-	# 		a.append(2)
-	# 	if y - 1 >= 0: #and self.plane[y-1][x] not in self.walls: #U
-	# 		a.append(3)	
-	# 	return a
-
-	def reset(self):
+	def reset(self,rtype):
 		self.path = set()
 		self.final = []
 		for agent in self.s:
