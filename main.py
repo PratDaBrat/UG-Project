@@ -15,7 +15,7 @@ def main(args):
 	os.mkdir(f'session{SESSIONID}/animations')
 
 	#maze generation
-	maze_path = 'session1657038993/maze.pickle'
+	maze_path = None
 	if maze_path is None:
 		M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)	
 	else:

@@ -1,6 +1,6 @@
 X,Y = 40, 40    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.05        #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-FOOD = 80
+FOOD = 100
 
 EPISODES = 3000
 MOVE_PENALTY = -1

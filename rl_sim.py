@@ -10,11 +10,12 @@ import pickle
 # style.use("ggplot")
 
 def RL(M,session,L=LEARNING_RATE):
+	start_time = int(time.time())
 	S = M.s
 	E = M.e
 	LEARNING_RATE = L
 	epsilon = 0.85
-	start_q_table = 'session1657038993/qtables/qtable50x50-1657093782.pickle' # or filename using pickle to continue training from certain points
+	start_q_table = None # or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
 		q_table = np.random.uniform(high=0,low=-10,size=[X,Y,4]) #with zeros to discourage repeating moves
@@ -72,18 +73,23 @@ def RL(M,session,L=LEARNING_RATE):
 				q_table[qy,qx,act] = 1
 
 		min_steps = i if i < min_steps else min_steps
-		if completed_count == 5 and min_steps == len(M.path):
+		if completed_count == 3 and min_steps == len(M.path):
 			print(LEARNING_RATE,episode)
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
+		
 		if render:
 			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
 			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
+			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
+				pickle.dump(q_table, f)
+		
 		try:
 			M.reset()
 		except Exception as e:
 			print('exception: ',e)
+
 
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
@@ -91,6 +97,3 @@ def RL(M,session,L=LEARNING_RATE):
 	# plt.ylabel(f'reward {SHOW_EVERY}ma')
 	# plt.xlabel('episode #')
 	# plt.savefig('data/{session}rlstats.png')
-
-	with open(f'session{session}/qtables/qtable{X}x{Y}-{int(time.time())}.pickle', 'wb') as f:
-		pickle.dump(q_table, f)
