@@ -77,7 +77,7 @@ def RL(M,session,L=LEARNING_RATE):
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
 		if render:
-			makeVideo(0,i,episode,session,f'session{session}/animations/{L}animation{episode}.mp4')
+			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
 			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 		try:
