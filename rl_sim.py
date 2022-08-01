@@ -3,11 +3,11 @@ from animate import makeVideo
 from constants import *
 import numpy as np
 import time, os
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import pickle
-# from matplotlib import style
+from matplotlib import style
 
-# style.use("ggplot")
+style.use("ggplot")
 
 def RL(M,session,L=LEARNING_RATE):
 	start_time = int(time.time())
@@ -79,11 +79,16 @@ def RL(M,session,L=LEARNING_RATE):
 		epsilon *= EPS_DECAY
 		
 		if render:
-			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
+			makeVideo(0,i+1,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
 			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
 				pickle.dump(q_table, f)
+			average_reward = sum(ep_rewards[-SHOW_EVERY:])/SHOW_EVERY
+			aggr_ep_rewards['ep'].append(episode)
+			aggr_ep_rewards['avg'].append(average_reward)
+			aggr_ep_rewards['max'].append(max(ep_rewards[-SHOW_EVERY:]))
+			aggr_ep_rewards['min'].append(min(ep_rewards[-SHOW_EVERY:]))
 		
 		try:
 			M.reset()
@@ -96,4 +101,8 @@ def RL(M,session,L=LEARNING_RATE):
 	# plt.plot([i for i in range(len(moving_avg))], moving_avg)
 	# plt.ylabel(f'reward {SHOW_EVERY}ma')
 	# plt.xlabel('episode #')
-	# plt.savefig('data/{session}rlstats.png')
+	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
+	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
+	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
+	plt.legend(loc=4)
+	plt.savefig(f'session{session}/stats.png')
