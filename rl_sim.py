@@ -79,7 +79,7 @@ def RL(M,session,L=LEARNING_RATE):
 		epsilon *= EPS_DECAY
 		
 		if render:
-			makeVideo(0,i+1,episode,session,f'session{session}/animations/{episode}.mp4')
+			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
 			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
