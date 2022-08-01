@@ -32,7 +32,6 @@ def RL(M,session,L=LEARNING_RATE):
 	min_steps = float('inf')
 
 	for episode in range(EPISODES+1):
-		print(episode)
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
 			render = True
@@ -85,14 +84,12 @@ def RL(M,session,L=LEARNING_RATE):
 			M.reset()
 		except Exception as e:
 			print('exception: ',e)
-			print('oof')
 
 		if render:
 			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
 			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 			average_reward = sum(episode_rewards[-SHOW_EVERY:])/SHOW_EVERY
-			print(episode_rewards,average_reward)
 			aggr_ep_rewards['ep'].append(episode)
 			aggr_ep_rewards['avg'].append(average_reward)
 			aggr_ep_rewards['max'].append(max(episode_rewards[-SHOW_EVERY:]))
