@@ -5,9 +5,9 @@ import numpy as np
 import time, os
 import matplotlib.pyplot as plt
 import pickle
-from matplotlib import style
+# from matplotlib import style
 
-style.use("ggplot")
+# style.use("ggplot")
 
 def RL(M,session,L=LEARNING_RATE):
 	start_time = int(time.time())
@@ -26,11 +26,13 @@ def RL(M,session,L=LEARNING_RATE):
 			q_table = pickle.load(f)
 
 	episode_rewards = []
+	aggr_ep_rewards = {'ep':[],'avg':[],'max':[],'min':[]}
 	A = S[0]
 	completed_count = 0
 	min_steps = float('inf')
 
 	for episode in range(EPISODES+1):
+		print(episode)
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
 			render = True
@@ -70,31 +72,33 @@ def RL(M,session,L=LEARNING_RATE):
 				new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
 				q_table[qy,qx,act] = new_q
 			else:
-				q_table[qy,qx,act] = 1
+				q_table[qy,qx,act] = FOOD_REWARD #1
 
 		min_steps = i if i < min_steps else min_steps
 		if completed_count == 3 and min_steps == len(M.path):
 			print(LEARNING_RATE,episode)
+		
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
-		
-		if render:
-			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
-			os.system(f'rm -rf session{session}/stateimages/*')
-			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
-			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
-				pickle.dump(q_table, f)
-			average_reward = sum(ep_rewards[-SHOW_EVERY:])/SHOW_EVERY
-			aggr_ep_rewards['ep'].append(episode)
-			aggr_ep_rewards['avg'].append(average_reward)
-			aggr_ep_rewards['max'].append(max(ep_rewards[-SHOW_EVERY:]))
-			aggr_ep_rewards['min'].append(min(ep_rewards[-SHOW_EVERY:]))
 		
 		try:
 			M.reset()
 		except Exception as e:
 			print('exception: ',e)
+			print('oof')
 
+		if render:
+			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
+			os.system(f'rm -rf session{session}/stateimages/*')
+			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
+			average_reward = sum(episode_rewards[-SHOW_EVERY:])/SHOW_EVERY
+			print(episode_rewards,average_reward)
+			aggr_ep_rewards['ep'].append(episode)
+			aggr_ep_rewards['avg'].append(average_reward)
+			aggr_ep_rewards['max'].append(max(episode_rewards[-SHOW_EVERY:]))
+			aggr_ep_rewards['min'].append(min(episode_rewards[-SHOW_EVERY:]))
+			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
+				pickle.dump(q_table, f)
 
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
@@ -104,5 +108,5 @@ def RL(M,session,L=LEARNING_RATE):
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
-	plt.legend(loc=4)
-	plt.savefig(f'session{session}/stats.png')
+	# plt.legend(loc=4)
+	plt.show(f'session{session}/stats.png')

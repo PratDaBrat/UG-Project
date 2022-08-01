@@ -1,4 +1,4 @@
-X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
+X,Y = 15, 15    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.05        #random.random() * 10000 // 100 / 100 #0.1 #sparseness
 FOOD = 10
 
@@ -14,5 +14,5 @@ EPS_DECAY = 0.998
 SHOW_EVERY = 1
 MAX_STEPS = 50
 
-LEARNING_RATE = 0.7 #0.2
+LEARNING_RATE = 0.3 #0.2
 DISCOUNT = 0.95
