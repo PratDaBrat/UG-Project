@@ -71,6 +71,7 @@ def RL(M,session,L=LEARNING_RATE):
 				q_table[qy,qx,act] = new_q
 			else:
 				q_table[qy,qx,act] = FOOD_REWARD #1
+				break
 		
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
