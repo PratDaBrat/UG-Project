@@ -1,8 +1,8 @@
 X,Y = 30, 30    #random.choice(range(50,100)),random.choice(range(50,100))
 W = 0.1        #random.random() * 10000 // 100 / 100 #0.1 #sparseness
-FOOD = 250
+FOOD = 60
 
-EPISODES = 3000
+EPISODES = 1000
 MOVE_PENALTY = -1
 ENEMY_PENALTY = -100
 STAT_PENALTY = -5

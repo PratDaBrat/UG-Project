@@ -28,8 +28,6 @@ def RL(M,session,L=LEARNING_RATE):
 	episode_rewards = []
 	aggr_ep_rewards = {'ep':[],'avg':[],'max':[],'min':[]}
 	A = S[0]
-	completed_count = 0
-	min_steps = float('inf')
 
 	for episode in range(EPISODES+1):
 		episode_reward = 0
@@ -38,6 +36,7 @@ def RL(M,session,L=LEARNING_RATE):
 		else:
 			render = False
 		i = 0
+		died = 0
 		done = False
 		while not done and len(E) > 0:
 			qx, qy = A.x, A.y
@@ -56,14 +55,14 @@ def RL(M,session,L=LEARNING_RATE):
 
 			if i > MAX_STEPS:
 				done = True
-				completed_count = 0
+				died += 1
 			elif any((A.x,A.y) == (e.x,e.y) for e in E):
 				done = True
+				died = 0
 				r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
 				M.einit.pop(*r)
 				E.remove(*r)
 				M.sinit[A] = (A.x,A.y)
-				completed_count += 1
 			
 			if not done:
 				max_future_q = np.max(q_table[A.y,A.x])
@@ -72,10 +71,6 @@ def RL(M,session,L=LEARNING_RATE):
 				q_table[qy,qx,act] = new_q
 			else:
 				q_table[qy,qx,act] = FOOD_REWARD #1
-
-		min_steps = i if i < min_steps else min_steps
-		if completed_count == 3 and min_steps == len(M.path):
-			print(LEARNING_RATE,episode)
 		
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
@@ -97,6 +92,9 @@ def RL(M,session,L=LEARNING_RATE):
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
 				pickle.dump(q_table, f)
 
+		if died == 5:
+			print(LEARNING_RATE,episode)
+			break
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
 	# plt.plot([i for i in range(len(moving_avg))], moving_avg)
