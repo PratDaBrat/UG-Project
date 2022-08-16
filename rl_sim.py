@@ -105,4 +105,4 @@ def RL(M,session,L=LEARNING_RATE):
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
 	# plt.legend(loc=4)
-	plt.show(f'session{session}/stats.png')
+	plt.savefig(f'session{session}/stats.png')
