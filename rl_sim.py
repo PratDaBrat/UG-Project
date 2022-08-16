@@ -36,7 +36,7 @@ def RL(M,session,L=LEARNING_RATE):
 		else:
 			render = False
 		i = 0
-		died = 0
+		completed = 0
 		done = False
 		while not done and len(E) > 0:
 			qx, qy = A.x, A.y
@@ -55,13 +55,13 @@ def RL(M,session,L=LEARNING_RATE):
 
 			if i > MAX_STEPS:
 				done = True
-				died += 1
+				completed = 0
 			elif any((A.x,A.y) == (e.x,e.y) for e in E):
 				done = True
-				died = 0
-				r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
-				M.einit.pop(*r)
-				E.remove(*r)
+				completed += 1
+				# r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
+				# M.einit.pop(*r)
+				# E.remove(*r)
 				M.sinit[A] = (A.x,A.y)
 			
 			if not done:
@@ -93,7 +93,7 @@ def RL(M,session,L=LEARNING_RATE):
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
 				pickle.dump(q_table, f)
 
-		if died == 5:
+		if completed == 5:
 			print(LEARNING_RATE,episode)
 			break
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
