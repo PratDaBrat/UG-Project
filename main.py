@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import os, shutil, sys, time
-from rl_sim import *
+from rl_train import *
 import pickle
 
 def main(args):

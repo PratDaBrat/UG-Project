@@ -62,7 +62,7 @@ def RL(M,session,L=LEARNING_RATE):
 				# r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
 				# M.einit.pop(*r)
 				# E.remove(*r)
-				M.sinit[A] = (A.x,A.y)
+				# M.sinit[A] = (A.x,A.y)
 			
 			if not done:
 				max_future_q = np.max(q_table[A.y,A.x])
