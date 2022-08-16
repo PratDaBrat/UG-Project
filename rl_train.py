@@ -9,11 +9,10 @@ import pickle
 
 # style.use("ggplot")
 
-def RL(M,session,L=LEARNING_RATE):
+def RL(M,session,L=LEARNING_RATE,SE=SHOW_EVERY):
 	start_time = int(time.time())
-	S = M.s
-	E = M.e
 	LEARNING_RATE = L
+	SHOW_EVERY = SE
 	epsilon = 0.85
 	start_q_table = None # or filename using pickle to continue training from certain points
 
@@ -27,9 +26,12 @@ def RL(M,session,L=LEARNING_RATE):
 
 	episode_rewards = []
 	aggr_ep_rewards = {'ep':[],'avg':[],'max':[],'min':[]}
-	A = S[0]
 
 	for episode in range(EPISODES+1):
+		M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
+		S = M.s
+		E = M.e
+		A = S[0]
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
 			render = True
