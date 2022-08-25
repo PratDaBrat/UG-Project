@@ -9,11 +9,10 @@ import pickle
 
 # style.use("ggplot")
 
-def RL(M,session,L=LEARNING_RATE,SE=SHOW_EVERY):
+def RL(M,session,L=LEARNING_RATE):
 	start_time = int(time.time())
 	LEARNING_RATE = L
-	SHOW_EVERY = SE
-	epsilon = 0.85
+
 	start_q_table = None # or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
@@ -24,14 +23,14 @@ def RL(M,session,L=LEARNING_RATE,SE=SHOW_EVERY):
 		with open(start_q_table, 'rb') as f:
 			q_table = pickle.load(f)
 
+	S = M.s
+	E = M.e
+	A = S[0]
+
 	episode_rewards = []
 	aggr_ep_rewards = {'ep':[],'avg':[],'max':[],'min':[]}
 
 	for episode in range(EPISODES+1):
-		M = Maze(X,Y,W,FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
-		S = M.s
-		E = M.e
-		A = S[0]
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
 			render = True
@@ -87,11 +86,13 @@ def RL(M,session,L=LEARNING_RATE,SE=SHOW_EVERY):
 			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
 			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
-			average_reward = sum(episode_rewards[-SHOW_EVERY:])/SHOW_EVERY
+			
+		if not episode % STATS_EVERY:
+			average_reward = sum(episode_rewards[-STATS_EVERY:])/STATS_EVERY
 			aggr_ep_rewards['ep'].append(episode)
 			aggr_ep_rewards['avg'].append(average_reward)
-			aggr_ep_rewards['max'].append(max(episode_rewards[-SHOW_EVERY:]))
-			aggr_ep_rewards['min'].append(min(episode_rewards[-SHOW_EVERY:]))
+			aggr_ep_rewards['max'].append(max(episode_rewards[-STATS_EVERY:]))
+			aggr_ep_rewards['min'].append(min(episode_rewards[-STATS_EVERY:]))
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
 				pickle.dump(q_table, f)
 
@@ -107,5 +108,5 @@ def RL(M,session,L=LEARNING_RATE,SE=SHOW_EVERY):
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
-	plt.legend(loc=4)
+	plt.legend(bbox_to_anchor = (0.75,1.15))
 	plt.savefig(f'session{session}/stats.png')

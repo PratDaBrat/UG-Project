@@ -29,9 +29,6 @@ def main(args):
 	if '-s' in args:
 		with open(f'session{SESSIONID}/maze.pickle', 'wb') as f:
 			pickle.dump(M,f)
-
-	if '-n' in args:
-		SHOW_EVERY = EPISODES
 		
 	# for l in reversed(range(1,11)):
 	try:
