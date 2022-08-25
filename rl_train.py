@@ -5,30 +5,26 @@ import numpy as np
 import time, os
 import matplotlib.pyplot as plt
 import pickle
-# from matplotlib import style
-
-# style.use("ggplot")
 
 def RL(M,session,L=LEARNING_RATE):
 	start_time = int(time.time())
+	S = M.s
+	E = M.e
 	LEARNING_RATE = L
-
+	epsilon = 0.75
 	start_q_table = None # or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
-		q_table = np.random.uniform(high=0,low=-10,size=[X,Y,4]) #with zeros to discourage repeating moves
+		q_table = np.random.uniform(high=1,low=0,size=[X,Y,4]) #with zeros to discourage repeating moves
 		# initialise q_table
 		pass
 	else:
 		with open(start_q_table, 'rb') as f:
 			q_table = pickle.load(f)
 
-	S = M.s
-	E = M.e
-	A = S[0]
-
 	episode_rewards = []
 	aggr_ep_rewards = {'ep':[],'avg':[],'max':[],'min':[]}
+	A = S[0]
 
 	for episode in range(EPISODES+1):
 		episode_reward = 0
@@ -45,7 +41,6 @@ def RL(M,session,L=LEARNING_RATE):
 				act = np.argmax(q_table[qy,qx])
 			else:
 				act = np.random.choice([0,1,2,3])
-			
 			A.action(act)
 			reward = M.updateAgent(A) #move complete
 			
