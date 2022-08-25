@@ -85,9 +85,9 @@ def RL(M,session,L=LEARNING_RATE):
 		if render:
 			makeVideo(0,i,episode,session,f'session{session}/animations/{episode}.mp4')
 			os.system(f'rm -rf session{session}/stateimages/*')
-			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-SHOW_EVERY:])}')
 			
 		if not episode % STATS_EVERY:
+			print(f'on {episode} with epsilon {epsilon}, mean = {np.mean(episode_rewards[-STATS_EVERY:])}')
 			average_reward = sum(episode_rewards[-STATS_EVERY:])/STATS_EVERY
 			aggr_ep_rewards['ep'].append(episode)
 			aggr_ep_rewards['avg'].append(average_reward)
@@ -108,5 +108,10 @@ def RL(M,session,L=LEARNING_RATE):
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
-	plt.legend(bbox_to_anchor = (0.75,1.15))
+	plt.legend(loc=2)
 	plt.savefig(f'session{session}/stats.png')
+
+	with open(f'session{session}/ep_rewards.pickle', 'wb') as f:
+				pickle.dump(episode_rewards, f)
+	with open(f'session{session}/aggr_rewards.pickle', 'wb') as f:
+				pickle.dump(aggr_ep_rewards, f)
