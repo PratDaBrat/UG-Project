@@ -7,8 +7,6 @@ def main(args):
 	PERSISTENCE = False
 	SESSIONID = int(time.time())
 
-	if '-p' in args:
-		PERSISTENCE = True
 	os.mkdir(f'session{SESSIONID}')
 	os.mkdir(f'session{SESSIONID}/stateimages')
 	os.mkdir(f'session{SESSIONID}/qtables')
@@ -26,6 +24,8 @@ def main(args):
 	with open(f'session{SESSIONID}/constants.pickle', 'wb') as f:
 			pickle.dump(c,f)
 
+	if '-p' in args:
+		PERSISTENCE = True
 	if '-s' in args:
 		with open(f'session{SESSIONID}/maze.pickle', 'wb') as f:
 			pickle.dump(M,f)
