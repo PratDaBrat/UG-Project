@@ -106,7 +106,7 @@ def RL(M,session,L=LEARNING_RATE):
 	plt.legend(loc=2)
 	plt.savefig(f'session{session}/stats.png')
 
-	with open(f'session{session}/ep_rewards.pickle', 'wb') as f:
-				pickle.dump(episode_rewards, f)
-	with open(f'session{session}/aggr_rewards.pickle', 'wb') as f:
-				pickle.dump(aggr_ep_rewards, f)
+	# with open(f'session{session}/ep_rewards.pickle', 'wb') as f:
+	# 			pickle.dump(episode_rewards, f)
+	# with open(f'session{session}/aggr_rewards.pickle', 'wb') as f:
+	# 			pickle.dump(aggr_ep_rewards, f)
