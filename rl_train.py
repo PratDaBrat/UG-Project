@@ -100,6 +100,8 @@ def RL(M,session,L=LEARNING_RATE):
 	plt.title(f'{X}x{Y} over {EPISODES} episodes')
 	plt.ylabel('averages')
 	plt.xlabel('episodes')
+	plt.xticks(np.arange(0,EPISODES,100))
+	# plt.yticks(np.arange(min(),max(re)))
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
