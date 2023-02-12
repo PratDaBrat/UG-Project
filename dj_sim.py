@@ -3,24 +3,44 @@ import random
 import time
 import heapq
 
-X,Y = 50, 50    #random.choice(range(50,100)),random.choice(range(50,100))
-W = 0.1         #random.random() * 10000 // 100 / 100  #sparseness
-food = 20
+def __main__():
+	X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
+	W = 0.1         #random.random() * 10000 // 100 / 100  #sparseness
+	food = 10
 
-#maze generation
-m = Maze(X,Y,W,food).generate()
-plane = m.plane
-walls = m.walls
-s = m.s
-e = m.e
-final = m.final
-path = m.path
+	#maze generation
+	m = Maze(X,Y,W,food).generate()
+	s = m.s
+	e = m.e
+	walls = m.walls
+	plane = m.plane
+	final = m.final
+	path = m.path
 
-visited = [s[0]]
+	visited = [s[0]]
+
+	print(s[0])
+
+	start_time = time.time()
+	dijkstra(X, Y, m, s, e, walls, plane, final, path, visited)
+	t = time.time() - start_time
+	#r()
+	path_len = len(final)-1
+	solve = ""
+
+	if path_len == -1:
+		solve = "unsolvable"	
+	else:
+		#pretty terminal visuals
+		# m.graphDisp('1.png')
+		m.disp()
+		solve = "solved"
+
+	print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
 
 
 #helper
-def available(m, x, y):
+def available(X, Y, m, x, y, walls):
 	a = []
 	if x + 1 < X and m[y][x+1] not in walls: #R
 		a.append(m[y][x+1])
@@ -41,8 +61,8 @@ def available(m, x, y):
 5. For each neighbor, repeat steps 3-5, taking care not to revisit already-visited agents.
 '''
 ## mapping costs
-def dijkstra():
-	if len(available(plane, s[0].x, s[0].y)) == 0 or len(available(plane, e[0].x, e[0].y)) == 0:
+def dijkstra(X, Y, m, s, e, walls, plane, final, path, visited):
+	if len(available(X, Y, plane, s[0].x, s[0].y, walls)) == 0 or len(available(plane, e[0].x, e[0].y)) == 0:
 		return 0
 	else:
 		ref = []
@@ -88,37 +108,19 @@ def dijkstra():
 			for i in range(X):
 				plane[j][i] = ref[X*j + i]
 
-#random bs
+#random walk
 def r():
 	cur = s[0]
-	while available(plane, cur.x, cur.y):
-		if e[0] in available(plane, cur.x, cur.y):
+	while available(m.plane, cur.x, cur.y):
+		if e[0] in available(m.plane, cur.x, cur.y):
 			print("fin")
 			break
-		cur = random.choice(available(plane, cur.x, cur.y))
+		cur = random.choice(available(m.plane, cur.x, cur.y))
 		if cur in visited:
 			continue
 		visited.append(cur)
 		final.append(cur)
 		cur.visited = True
-
-def __main__():
-	start_time = time.time()
-	dijkstra()
-	t = time.time() - start_time
-	#r()
-	path_len = len(final)-1
-	solve = ""
-
-	if path_len == -1:
-		solve = "unsolvable"	
-	else:
-		#pretty terminal visuals
-		# m.graphDisp('1.png')
-		m.disp()
-		solve = "solved"
-
-	print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
 
 __main__()
 ### with random runtime 6.368312835693359 s on 100x100 2d space with 0.2 sparsity of toxin

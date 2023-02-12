@@ -17,7 +17,7 @@ class Maze:
 		self.plane = [[Agent(i, j, travelPenalty=-1) for i in range(X)] for j in range (Y)]
 		self.display = [[' ' for i in range(X)] for i in range (Y)]
 
-	def generate(self, WallPenalty, StatPenalty, FoodReward):
+	def generate(self, WallPenalty=0, StatPenalty=0, FoodReward=0):
 		while len(self.walls) < self.sparsity * self.X * self.Y:
 			x = random.choice(range(0,self.X))
 			y = random.choice(range(0,self.Y))
