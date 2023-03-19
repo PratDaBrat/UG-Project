@@ -88,38 +88,40 @@ def r(X, Y, m, s, e, walls, plane, final, path, visited):
 
 def __main__():
 	X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
-	W = 0.6         #random.random() * 10000 // 100 / 100  #sparseness
+	# W = 0.6         #random.random() * 10000 // 100 / 100  #sparseness
 	food = 10
 
-	#maze generation
-	m = Maze(X,Y,W,food).generate()
-	s = m.s
-	e = m.e
-	walls = m.walls
-	plane = m.plane
-	final = m.final
-	path = m.path
+	for W in [w/100 for w in range(45,66)]:
+		for _ in range(50):
+			#maze generation
+			m = Maze(X,Y,W,food).generate()
+			s = m.s
+			e = m.e
+			walls = m.walls
+			plane = m.plane
+			final = m.final
+			path = m.path
 
-	visited = [s[0]]
+			visited = [s[0]]
 
-	# print(s[0])
+			# print(s[0])
 
-	start_time = time.time()
-	dijkstra(X, Y, m, s, e, walls, plane, final, path, visited)
-	t = time.time() - start_time
-	#r()
-	path_len = len(final)-1
-	solve = ""
+			start_time = time.time()
+			dijkstra(X, Y, m, s, e, walls, plane, final, path, visited)
+			t = time.time() - start_time
+			#r()
+			path_len = len(final)-1
+			solve = ""
 
-	if path_len == 0:
-		solve = "unsolvable"	
-	else:
-		#pretty terminal visuals
-		# m.graphDisp('1.png')
-		m.disp()
-		solve = "solved"
+			if path_len == 0:
+				solve = "unsolvable"	
+			else:
+				#pretty terminal visuals
+				# m.graphDisp('1.png')
+				# m.disp()
+				solve = "solved"
 
-	print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
+			print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
 
 
 __main__()
