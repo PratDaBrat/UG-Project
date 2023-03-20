@@ -87,7 +87,7 @@ def r(X, Y, m, s, e, walls, plane, final, path, visited):
 		cur.visited = True
 
 def __main__():
-	X,Y = 10, 10    #random.choice(range(50,100)),random.choice(range(50,100))
+	X,Y = 100, 100    #random.choice(range(50,100)),random.choice(range(50,100))
 	# W = 0.6         #random.random() * 10000 // 100 / 100  #sparseness
 	food = 10
 
