@@ -87,11 +87,11 @@ def r(X, Y, m, s, e, walls, plane, final, path, visited):
 		cur.visited = True
 
 def __main__():
-	X,Y = 125, 125    #random.choice(range(50,100)),random.choice(range(50,100))
+	X,Y = 75, 75    #random.choice(range(50,100)),random.choice(range(50,100))
 	# W = 0.6         #random.random() * 10000 // 100 / 100  #sparseness
 	food = 10
 
-	for W in [w/100 for w in range(45,66)]:
+	for W in [w/100 for w in range(45,81)]:
 		for _ in range(50):
 			#maze generation
 			m = Maze(X,Y,W,food).generate()

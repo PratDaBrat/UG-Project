@@ -6,11 +6,11 @@ import time, os
 import matplotlib.pyplot as plt
 import pickle
 
-def RL(M,session,L=LEARNING_RATE):
+def RL(M,session):
 	start_time = int(time.time())
 	S = M.s
 	E = M.e
-	LEARNING_RATE = L
+	# LEARNING_RATE = 0.2
 	epsilon = 0.75
 	start_q_table = None # or filename using pickle to continue training from certain points
 

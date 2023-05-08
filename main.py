@@ -32,7 +32,7 @@ def main(args):
 		
 	# for l in reversed(range(1,11)):
 	try:
-		RL(M,SESSIONID,SHOW_EVERY)
+		RL(M,SESSIONID)
 		if not PERSISTENCE:
 			shutil.rmtree(f'session{SESSIONID}')
 	except:
