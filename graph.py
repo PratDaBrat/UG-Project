@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
+# import seaborn as sns
 
 t,n1,n2 = [],[],[]
 ut,un1,un2 = [],[],[]
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 
-file = open("times.txt",'r')
+file = open("data/times.txt",'r')
 for i in range(350):
 	arr = file.readline().split()
 	if arr[1] == 'solved':
