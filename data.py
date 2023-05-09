@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 # import seaborn as sns
 
-file = open('times100x100.txt','r')
+file = open('times75x75.txt','r')
 solved = []
 unsolved = []
 
@@ -23,10 +23,14 @@ for entry in m:
 	if entry[1] == 'solved' and int(entry[6]) > 5:
 		s += [float(entry[4])]
 		t += [float(entry[2]) if 'e' not in entry[2] else 0]
-	if entry[1] == 'unsolvable':
+	if entry[1] == 'unsolvable' and float(entry[2]) > 0.0003:
 		us += [float(entry[4])]
 		ut += [float(entry[2]) if 'e' not in entry[2] else 0]
 
+plt.title(f"Relation between W and t for {entry[0]} sized lattice")
+plt.xlabel("Sparsities (W)")
+plt.ylabel("Times (t)")
 plt.scatter(us,ut,c='red',s=10)
 plt.scatter(s,t,s=15)
+plt.legend(["unsolved","solved"],loc=1)
 plt.show()
