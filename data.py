@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 # import seaborn as sns
 
-file = open('times75x75.txt','r')
+file = open('times100x100.txt','r')
 solved = []
 unsolved = []
 
