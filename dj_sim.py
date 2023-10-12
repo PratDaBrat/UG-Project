@@ -86,12 +86,12 @@ def r(X, Y, m, s, e, walls, plane, final, path, visited):
 		final.append(cur)
 		cur.visited = True
 
-def __main__():
-	X,Y = 125, 125    #random.choice(range(50,100)),random.choice(range(50,100))
+def __main__(X,Y):
+	# X,Y = 125, 125    #random.choice(range(50,100)),random.choice(range(50,100))
 	# W = 0.6         #random.random() * 10000 // 100 / 100  #sparseness
-	food = 10
+	food = (X * Y) // 10
 
-	for W in [w/100 for w in range(45,81)]:
+	for W in [w / 100 for w in range(45,81)]:
 		for _ in range(50):
 			#maze generation
 			m = Maze(X,Y,W,food).generate()
@@ -123,8 +123,9 @@ def __main__():
 
 			print(f"{X}x{Y} {solve} {t} seconds {W} sparsity {path_len} path")
 
-
-__main__()
+for x in range(50,110,10):
+	for i in range(10):
+		__main__(x,x)
 ### with random runtime 6.368312835693359 s on 100x100 2d space with 0.2 sparsity of toxin
 ### with dijkstra program takes way too long to finish executing on a 100x100 2d space
 ### with dijkstra runtime 10.19450306892395 s on 50x50 2d space with 0.2 sparsity of toxin
