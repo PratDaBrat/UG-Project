@@ -104,7 +104,7 @@ class Maze:
 		2: np.array([31, 247, 2]),# food
 		3: np.array([2, 94, 171]),# walls
 		4: np.array([150, 150, 150])} # path
-		
+
 		self.display = [[color_map[0] for i in range(self.X)] for i in range (self.Y)]
 		self.final = list(self.path)
 		for i in range(0,self.X):
