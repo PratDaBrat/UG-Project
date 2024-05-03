@@ -36,7 +36,7 @@ def RL(M, session):
 		else:
 			render = False
 		i = 0
-		completed = 0
+		# completed = 0
 		done = False
 		while not done and len(E) > 0:
 			qx, qy = A.x, A.y
@@ -49,7 +49,7 @@ def RL(M, session):
 
 			try:
 				if render:
-					M.graphDisp(f'session{session}/stateimages/{episode}_{i}.png')
+					# M.graphDisp(f'session{session}/stateimages/{episode}_{i}.png')
 					QTDisp(M, q_table, f'session{session}/qtimages/{episode}_{i}.png')
 			except Exception as e:
 				print('exception: ', e)
@@ -58,10 +58,9 @@ def RL(M, session):
 
 			if i > MAX_STEPS:
 				done = True
-				completed = 0
 			elif any((A.x, A.y) == (e.x, e.y) for e in E):
 				done = True
-				completed += 1
+				# completed += 1
 				# r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
 				# M.einit.pop(*r)
 				# E.remove(*r)
@@ -84,9 +83,9 @@ def RL(M, session):
 			print('exception: ', e)
 
 		if render:
-			makeVideo(0, i, episode, session, f'session{session}/animations/{episode}.mp4')
+			# makeVideo(0, i, episode, session, f'session{session}/animations/{episode}.mp4')
 			makeQTV(0, i, episode, session, f'session{session}/animations/qt_{episode}.mp4')
-			os.system(f'rm -rf session{session}/stateimages/*')
+			# os.system(f'rm -rf session{session}/stateimages/*')
 			os.system(f'rm -rf session{session}/qtimages/*')
 
 		if not episode % STATS_EVERY:
@@ -99,9 +98,9 @@ def RL(M, session):
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
 				pickle.dump(q_table, f)
 
-		if completed == 5:
-			print(LEARNING_RATE, episode)
-			break
+		# if completed == 50:
+		# 	print(LEARNING_RATE, episode)
+		# 	break
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
 	# plt.plot([i for i in range(len(moving_avg))], moving_avg)
