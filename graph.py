@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.patches import Polygon
 from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.cm import get_cmap
 from Maze import *
 # import seaborn as sns
 # import pickle
@@ -84,7 +85,9 @@ def visQTable(ax, q_table):
 
 	x, y, num_actions = q_table.shape
 
-	cmap = LinearSegmentedColormap.from_list('grayscale', [(0, 'black'), (1, 'white')])		# color_map = lambda q_value 
+	# cmap = LinearSegmentedColormap.from_list('grayscale', [(0, 'black'), (1, 'white')])
+	# color_map = lambda q_value 
+	cmap = get_cmap('coolwarm')
 
 	for i in range(x):
 		for j in range(y):

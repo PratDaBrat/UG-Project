@@ -18,9 +18,8 @@ def RL(M, session):
 	start_q_table = None		# or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
-		q_table = np.random.uniform(high=2, low=1, size=[X, Y, 4]) 	# with zeros to discourage repeating moves
-		# initialise q_table
-		pass
+		q_table = np.zeros(shape=[X, Y, 4])		# initialise q_table
+		# q_table = np.random.uniform(high=2, low=1, size=[X, Y, 4]) 	# with zeros to discourage repeating moves
 	else:
 		with open(start_q_table, 'rb') as f:
 			q_table = pickle.load(f)
@@ -28,6 +27,7 @@ def RL(M, session):
 	episode_rewards = []
 	aggr_ep_rewards = {'ep': [], 'avg': [], 'max': [], 'min': []}
 	A = S[0]
+	completed = 0
 
 	for episode in tqdm(range(EPISODES + 1), desc='Training RL Model', unit='episode'):
 		episode_reward = 0
@@ -36,7 +36,6 @@ def RL(M, session):
 		else:
 			render = False
 		i = 0
-		# completed = 0
 		done = False
 		while not done and len(E) > 0:
 			qx, qy = A.x, A.y
@@ -60,11 +59,12 @@ def RL(M, session):
 				done = True
 			elif any((A.x, A.y) == (e.x, e.y) for e in E):
 				done = True
-				# completed += 1
-				# r = [e for e in E if (e.x,e.y) == (A.x,A.y)]
+				completed += 1
+				# r = [e for e in E if (e.x, e.y) == (A.x, A.y)]
 				# M.einit.pop(*r)
 				# E.remove(*r)
-				# M.sinit[A] = (A.x,A.y)
+				M.sinit[A] = (A.x, A.y)
+				# M = M.generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
 			if not done:
 				max_future_q = np.max(q_table[A.y, A.x])
 				cur_q = q_table[qy, qx, act]
@@ -104,7 +104,7 @@ def RL(M, session):
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
 
 	# plt.plot([i for i in range(len(moving_avg))], moving_avg)
-	plt.title(f'{X}x{Y} over {EPISODES} episodes')
+	plt.title(f'{X}x{Y} over {EPISODES} episodes completed {completed} times')
 	plt.ylabel('averages')
 	plt.xlabel('episodes')
 	plt.xticks(np.arange(0, EPISODES, 100))
@@ -116,6 +116,6 @@ def RL(M, session):
 	plt.savefig(f'session{session}/stats.png')
 
 	with open(f'session{session}/ep_rewards.pickle', 'wb') as f:
-				pickle.dump(episode_rewards, f)
+		pickle.dump(episode_rewards, f)
 	with open(f'session{session}/aggr_rewards.pickle', 'wb') as f:
-				pickle.dump(aggr_ep_rewards, f)
+		pickle.dump(aggr_ep_rewards, f)
