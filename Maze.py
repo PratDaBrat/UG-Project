@@ -82,12 +82,11 @@ class Maze:
 			self.plane[food.y][food.x] = food
 			# self.updateAgent(food)  #for immobile food
 
-
 	def generateDisp(self):
 		self.display = [[' ' for i in range(self.X)] for i in range(self.Y)]
 		self.final = list(self.path)
-		for i in range(0,self.X):
-			for j in range(0,self.Y):
+		for i in range(0, self.X):
+			for j in range(0, self.Y):
 				if self.plane[j][i] in self.s:
 					self.display[j][i] = "s"
 				elif self.plane[j][i] in self.e:
@@ -99,28 +98,28 @@ class Maze:
 		return self.display
 
 	def disp(self):
-		for n,_ in enumerate(self.display):
+		for n, _ in enumerate(self.display):
 			for __ in _:
 				print(__, end=' ')
 			print()
 
-	def graphDisp(self,name):
-		color_map = {0: np.array([50, 20, 0]),# plain
-		1: np.array([255, 0, 0]),# agent
-		2: np.array([31, 247, 2]),# food
-		3: np.array([2, 94, 171]),# walls
-		4: np.array([150, 150, 150])} # path
+	def graphDisp(self, name):
+		color_map = {0: np.array([50, 20, 0]),  # plain
+		1: np.array([255, 0, 0]),				# agent
+		2: np.array([31, 247, 2]),				# food
+		3: np.array([2, 94, 171]),				# walls
+		4: np.array([150, 150, 150])} 			# path
 
-		self.display = [[color_map[0] for i in range(self.X)] for i in range (self.Y)]
+		self.display = [[color_map[0] for i in range(self.X)] for i in range(self.Y)]
 		self.final = list(self.path)
-		for i in range(0,self.X):
-			for j in range(0,self.Y):
+		for i in range(0, self.X):
+			for j in range(0, self.Y):
 				if self.plane[j][i] in self.s:
 					self.display[j][i] = color_map[1]
 				elif self.plane[j][i] in self.e:
 					self.display[j][i] = color_map[2]
 				elif self.plane[j][i] in self.walls:
-					self.display[j][i] = color_map[3] 
+					self.display[j][i] = color_map[3]
 				elif self.plane[j][i] in self.final:
 					self.display[j][i] = color_map[4]
 
