@@ -26,7 +26,7 @@ def RL(M, session):
 
 	episode_rewards = []
 	aggr_ep_rewards = {'ep': [], 'avg': [], 'max': [], 'min': []}
-	A = S[0]
+	# A = S[0]
 	# completed = 0
 
 	for episode in tqdm(range(EPISODES + 1), desc='Training RL Model', unit='episode'):
@@ -35,43 +35,46 @@ def RL(M, session):
 			render = True
 		else:
 			render = False
+
 		i = 0
 		done = False
 		while not done and len(E) > 0:
-			qx, qy = A.x, A.y
-			if np.random.random() > epsilon:
-				act = np.argmax(q_table[qy, qx])
-			else:
-				act = np.random.choice([0, 1, 2, 3])
-			A.action(act)
-			reward = M.updateAgent(A)		#move complete	
+			i += 1
+			for A in S:
+				qx, qy = A.x, A.y
+				if np.random.random() > epsilon:
+					act = np.argmax(q_table[qy, qx])
+				else:
+					act = np.random.choice([0, 1, 2, 3])
+				A.action(act)
+				reward = M.updateAgent(A)		#move complete	
+				episode_reward += reward
 
+				if i > MAX_STEPS:
+					done = True
+				elif any((A.x, A.y) == (e.x, e.y) for e in E):
+					done = True
+					# completed += 1
+					# r = [e for e in E if (e.x, e.y) == (A.x, A.y)]
+					# M.einit.pop(*r)
+					# E.remove(*r)
+					# M.sinit[A] = (A.x, A.y)
+					# M = M.generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD, M.sinit, M.einit)
+				if not done:
+					max_future_q = np.max(q_table[A.y, A.x])
+					cur_q = q_table[qy, qx, act]
+					new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
+					q_table[qy, qx, act] = new_q
+				else:
+					q_table[qy, qx, act] = FOOD_REWARD
 			try:
 				if render:
 					# M.graphDisp(f'session{session}/stateimages/{episode}_{i}.png')
 					QTDisp(M, q_table, f'session{session}/qtimages/{episode}_{i}.png')
 			except Exception as e:
 				print('exception: ', e)
-			i += 1
-			episode_reward += reward
 
-			if i > MAX_STEPS:
-				done = True
-			elif any((A.x, A.y) == (e.x, e.y) for e in E):
-				done = True
-				# completed += 1
-				# r = [e for e in E if (e.x, e.y) == (A.x, A.y)]
-				# M.einit.pop(*r)
-				# E.remove(*r)
-				# M.sinit[A] = (A.x, A.y)
-				# M = M.generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD, M.sinit, M.einit)
-			if not done:
-				max_future_q = np.max(q_table[A.y, A.x])
-				cur_q = q_table[qy, qx, act]
-				new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
-				q_table[qy, qx, act] = new_q
-			else:
-				q_table[qy, qx, act] = FOOD_REWARD		#1
+			if done:
 				break
 
 		episode_rewards.append(episode_reward)
@@ -84,7 +87,7 @@ def RL(M, session):
 
 		if render:
 			# makeVideo(0, i, episode, session, f'session{session}/animations/{episode}.mp4')
-			makeQTV(0, i, episode, session, f'session{session}/animations/qt_{episode}.mp4')
+			makeQTV(1, i, episode, session, f'session{session}/animations/qt_{episode}.mp4')
 			# os.system(f'rm -rf session{session}/stateimages/*')
 			os.system(f'rm -rf session{session}/qtimages/*')
 

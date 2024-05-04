@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class Maze:
-	def __init__(self, X, Y, sparsity, food=1):
+	def __init__(self, X, Y, sparsity, agents=1, food=1):
 		self.X = X
 		self.Y = Y
 		self.sparsity = sparsity
+		self.agents = agents
 		self.food = food
 		self.walls = []
 		self.s = []
@@ -29,7 +30,7 @@ class Maze:
 				self.plane[y][x] = Agent(x, y, "wall", travelPenalty=WallPenalty)  #wall
 				self.walls.append(self.plane[y][x])
 
-		while len(self.s) < 1:
+		while len(self.s) < self.agents:
 			x = random.choice(range(0, self.X))
 			y = random.choice(range(0, self.Y))
 			if self.plane[y][x].group is None:
@@ -73,12 +74,14 @@ class Maze:
 		self.path = set()
 		self.final = []
 		for agent in self.s:
+			# self.sinit[agent] = agent.x, agent.y
 			agent.x, agent.y = self.sinit[agent]
 			self.updateAgent(agent)
 		for food in self.e:
 			food.x, food.y = self.einit[food]
 			self.plane[food.y][food.x] = food
 			# self.updateAgent(food)  #for immobile food
+
 
 	def generateDisp(self):
 		self.display = [[' ' for i in range(self.X)] for i in range(self.Y)]
