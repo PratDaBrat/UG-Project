@@ -65,22 +65,27 @@ class Maze:
 
 		old_agent = self.plane[agent.y][agent.x]
 		self.path.add(old_agent)
+		if agent.previous is None:
+			agent.previous = Agent(agent.x, agent.y)
 		self.plane[agent.previous.y][agent.previous.x] = agent.previous
 		agent.previous, self.plane[agent.y][agent.x] = self.plane[agent.y][agent.x], agent
 		self.generateDisp()
 		return old_agent.travelPenalty
 
-	def reset(self):
-		self.path = set()
+	def reset(self, sinit, einit):
 		self.final = []
+		self.sinit = sinit
+		self.einit = einit
 		for agent in self.s:
 			# self.sinit[agent] = agent.x, agent.y
 			agent.x, agent.y = self.sinit[agent]
 			self.updateAgent(agent)
 		for food in self.e:
 			food.x, food.y = self.einit[food]
-			self.plane[food.y][food.x] = food
-			# self.updateAgent(food)  #for immobile food
+			# self.plane[food.y][food.x] = food
+			self.updateAgent(food)
+		self.path = set()
+		self.generateDisp()
 
 	def generateDisp(self):
 		self.display = [[' ' for i in range(self.X)] for i in range(self.Y)]

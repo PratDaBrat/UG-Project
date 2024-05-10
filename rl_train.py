@@ -54,11 +54,14 @@ def RL(M, session):
 					done = True
 				elif any((A.x, A.y) == (e.x, e.y) for e in E):
 					done = True
+					M.sinit[A] = (A.x, A.y)
 					# completed += 1
-					# r = [e for e in E if (e.x, e.y) == (A.x, A.y)]
+					r = [e for e in E if (e.x, e.y) == (A.x, A.y)]
+					M.einit[r[0]] = (random.choice(range(0, M.X)), random.choice(range(0, M.Y)))
+					# print(M.sinit)
+					# print(M.einit)
 					# M.einit.pop(*r)
 					# E.remove(*r)
-					# M.sinit[A] = (A.x, A.y)
 					# M = M.generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD, M.sinit, M.einit)
 				if not done:
 					max_future_q = np.max(q_table[A.y, A.x])
@@ -67,28 +70,19 @@ def RL(M, session):
 					q_table[qy, qx, act] = new_q
 				else:
 					q_table[qy, qx, act] = FOOD_REWARD
-			try:
-				if render:
-					# M.graphDisp(f'session{session}/stateimages/{episode}_{i}.png')
-					QTDisp(M, q_table, f'session{session}/qtimages/{episode}_{i}.png')
-			except Exception as e:
-				print('exception: ', e)
+
+			if render:
+				QTDisp(M, q_table, f'session{session}/qtimages/{episode}_{i}.png')
 
 			if done:
 				break
 
 		episode_rewards.append(episode_reward)
 		epsilon *= EPS_DECAY
-
-		try:
-			M.reset()
-		except Exception as e:
-			print('exception: ', e)
+		M.reset(M.sinit, M.einit)
 
 		if render:
-			# makeVideo(0, i, episode, session, f'session{session}/animations/{episode}.mp4')
 			makeQTV(1, i, episode, session, f'session{session}/animations/qt_{episode}.mp4')
-			# os.system(f'rm -rf session{session}/stateimages/*')
 			os.system(f'rm -rf session{session}/qtimages/*')
 
 		if not episode % STATS_EVERY:
@@ -115,7 +109,7 @@ def RL(M, session):
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
-	plt.legend(loc=2)
+	plt.legend(loc=3)
 	plt.savefig(f'session{session}/stats.png')
 
 	with open(f'session{session}/ep_rewards.pickle', 'wb') as f:

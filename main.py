@@ -2,6 +2,7 @@
 import os, shutil, sys, time
 from rl_train import *
 import pickle
+import traceback
 
 
 def main(args):
@@ -9,7 +10,6 @@ def main(args):
 	SESSIONID = int(time.time())
 
 	os.mkdir(f'session{SESSIONID}')
-	os.mkdir(f'session{SESSIONID}/stateimages')
 	os.mkdir(f'session{SESSIONID}/qtables')
 	os.mkdir(f'session{SESSIONID}/qtimages')
 	os.mkdir(f'session{SESSIONID}/animations')
@@ -40,6 +40,7 @@ def main(args):
 			shutil.rmtree(f'session{SESSIONID}')
 	except Exception as e:
 		print(e)
+		traceback.print_exc()
 		if not PERSISTENCE:
 			shutil.rmtree(f'session{SESSIONID}')
 
