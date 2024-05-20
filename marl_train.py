@@ -26,7 +26,7 @@ def RL(M, session):
 
 	episode_rewards = []
 	aggr_ep_rewards = {'ep': [], 'avg': [], 'max': [], 'min': []}
-	A = S[0]
+	# A = S[0]
 	# completed = 0
 
 	for episode in tqdm(range(EPISODES + 1), desc='Training RL Model', unit='episode'):
@@ -40,27 +40,36 @@ def RL(M, session):
 		done = False
 		while not done and len(E) > 0:
 			i += 1
-			
-			qx, qy = A.x, A.y
-			if np.random.random() > epsilon:
-				act = np.argmax(q_table[qy, qx])
-			else:
-				act = np.random.choice([0, 1, 2, 3])
-			A.action(act)
-			reward = M.updateAgent(A)		#move complete	
-			episode_reward += reward
+			for A in S:
+				qx, qy = A.x, A.y
+				if np.random.random() > epsilon:
+					act = np.argmax(q_table[qy, qx])
+				else:
+					act = np.random.choice([0, 1, 2, 3])
+				A.action(act)
+				reward = M.updateAgent(A)		#move complete	
+				episode_reward += reward
 
-			if i > MAX_STEPS:
-				done = True
-			elif any((A.x, A.y) == (e.x, e.y) for e in E):
-				done = True
-			if not done:
-				max_future_q = np.max(q_table[A.y, A.x])
-				cur_q = q_table[qy, qx, act]
-				new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
-				q_table[qy, qx, act] = new_q
-			else:
-				q_table[qy, qx, act] = FOOD_REWARD
+				if i > MAX_STEPS:
+					done = True
+				elif any((A.x, A.y) == (e.x, e.y) for e in E):
+					done = True
+					M.sinit[A] = (A.x, A.y)
+					# completed += 1
+					r = [e for e in E if (e.x, e.y) == (A.x, A.y)]
+					M.einit[r[0]] = (random.choice(range(0, M.X)), random.choice(range(0, M.Y)))
+					# print(M.sinit)
+					# print(M.einit)
+					# M.einit.pop(*r)
+					# E.remove(*r)
+					# M = M.generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD, M.sinit, M.einit)
+				if not done:
+					max_future_q = np.max(q_table[A.y, A.x])
+					cur_q = q_table[qy, qx, act]
+					new_q = (1 - LEARNING_RATE) * cur_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
+					q_table[qy, qx, act] = new_q
+				else:
+					q_table[qy, qx, act] = FOOD_REWARD
 
 			if render:
 				QTDisp(M, q_table, f'session{session}/qtimages/{episode}_{i}.png')
@@ -86,17 +95,21 @@ def RL(M, session):
 			with open(f'session{session}/qtables/{episode}qtable{X}x{Y}-{int(time.time())-start_time}.pickle', 'wb') as f:
 				pickle.dump(q_table, f)
 
+		# if completed == 50:
+		# 	print(LEARNING_RATE, episode)
+		# 	break
 	# moving_avg = np.convolve(episode_rewards, np.ones((SHOW_EVERY,))/SHOW_EVERY, mode='valid')
+
 	# plt.plot([i for i in range(len(moving_avg))], moving_avg)
 	plt.title(f'{X}x{Y} over {EPISODES} episodes')  # completed {completed} times')
 	plt.ylabel('averages')
 	plt.xlabel('episodes')
-	plt.xticks(np.arange(0, EPISODES+1, 500))
+	plt.xticks(np.arange(0, EPISODES, 100))
 	# plt.yticks(np.arange(min(),max(re)))
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['avg'], label="average rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['max'], label="max rewards")
 	plt.plot(aggr_ep_rewards['ep'], aggr_ep_rewards['min'], label="min rewards")
-	plt.legend(loc=4)
+	plt.legend(loc=3)
 	plt.savefig(f'session{session}/stats.png')
 
 	with open(f'session{session}/ep_rewards.pickle', 'wb') as f:

@@ -44,7 +44,7 @@ def visQTable(ax, q_table):
 
 	# cmap = LinearSegmentedColormap.from_list('grayscale', [(0, 'black'), (1, 'white')])
 	# color_map = lambda q_value 
-	cmap = get_cmap('coolwarm')
+	cmap = get_cmap('RdYlBu')
 
 	for i in range(x):
 		for j in range(y):

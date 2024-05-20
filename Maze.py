@@ -13,6 +13,8 @@ class Maze:
 		self.walls = []
 		self.s = []
 		self.e = []
+		self.sinit = {}
+		self.einit = {}
 		self.final = []
 		self.path = set()
 		self.plane = [[Agent(i, j, travelPenalty=-1) for i in range(X)] for j in range(Y)]
@@ -82,8 +84,8 @@ class Maze:
 			self.updateAgent(agent)
 		for food in self.e:
 			food.x, food.y = self.einit[food]
-			# self.plane[food.y][food.x] = food
-			self.updateAgent(food)
+			self.plane[food.y][food.x] = food
+			# self.updateAgent(food)
 		self.path = set()
 		self.generateDisp()
 
