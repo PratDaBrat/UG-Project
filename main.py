@@ -22,7 +22,7 @@ def main(args):
 		with open(maze_path, 'rb') as f:
 			M = pickle.load(f)
 	# M.disp()
-	c = [X, Y, W, FOOD, EPISODES, MOVE_PENALTY, ENEMY_PENALTY, STAT_PENALTY,
+	c = [X, Y, W, FOOD, EPISODES, ENEMY_PENALTY, STAT_PENALTY,
 		FOOD_REWARD, epsilon, EPS_DECAY, LEARNING_RATE, DISCOUNT]
 	with open(f'session{SESSIONID}/constants.pickle', 'wb') as f:
 		pickle.dump(c, f)

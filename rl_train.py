@@ -10,7 +10,6 @@ import pickle
 
 
 def RL(M, session):
-	start_time = int(time.time())
 	S = M.s
 	E = M.e
 	# LEARNING_RATE = 0.2
@@ -28,7 +27,7 @@ def RL(M, session):
 	aggr_ep_rewards = {'ep': [], 'avg': [], 'max': [], 'min': []}
 	A = S[0]
 	# completed = 0
-
+	start_time = int(time.time())
 	for episode in tqdm(range(EPISODES + 1), desc='Training RL Model', unit='episode'):
 		episode_reward = 0
 		if not episode % SHOW_EVERY:
@@ -40,9 +39,8 @@ def RL(M, session):
 		done = False
 		while not done and len(E) > 0:
 			i += 1
-			
 			qx, qy = A.x, A.y
-			if np.random.random() > epsilon:
+			if np.random.random() < epsilon:
 				act = np.argmax(q_table[qy, qx])
 			else:
 				act = np.random.choice([0, 1, 2, 3])
