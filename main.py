@@ -3,7 +3,7 @@ import os, shutil, sys, time
 from rl_train import *
 import pickle
 import traceback
-
+from constants import *
 
 def main(args):
 	PERSISTENCE = False
@@ -17,7 +17,7 @@ def main(args):
 	# maze generation
 	maze_path = None
 	if maze_path is None:
-		M = Maze(X, Y, W, AGENTS, FOOD).generate(ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
+		M = Maze(X, Y, W, AGENTS, FOOD).generate(MOVE_PENALTY, ENEMY_PENALTY, STAT_PENALTY, FOOD_REWARD)
 	else:
 		with open(maze_path, 'rb') as f:
 			M = pickle.load(f)

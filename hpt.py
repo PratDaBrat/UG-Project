@@ -19,11 +19,11 @@ def grid_search_hyperparameters(X, Y):
 	"""
 
 	# Define hyperparameter search space
-	learning_rates = np.arange(0.1, 0.21, 0.01)
-	discount_factors = np.arange(0.7, 0.9, 0.02)
-	episodes_list = np.arange(7000, 13000, 1000)
+	learning_rates = [0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2]
+	discount_factors = [0.7, 0.72, 0.74, 0.76, 0.78, 0.8, 0.82, 0.84, 0.86, 0.88, 0.9]
+	episodes_list = [9000]
 
-	performance_matrix = np.zeros(shape=[len(learning_rates), len(discount_factors)])
+	performance_matrix = np.full((len(learning_rates), len(discount_factors)), float('-inf'))
 	for episodes in episodes_list:
 		M = Maze(X, Y, 0.1, agents=1, food=2).generate(-400, -100, 200)
 		S = M.s
@@ -75,21 +75,20 @@ def grid_search_hyperparameters(X, Y):
 			"discount_factor": discount_factors[best_config_index[1]],
 		}
 		best_performance = performance_matrix.max()
-		print(best_config, best_performance)
-		print(performance_matrix)
 		plt.figure(figsize=(8, 8))
 		plt.imshow(performance_matrix, cmap='coolwarm')
 		plt.colorbar(label='Average Reward')
-		plt.xticks(range(len(learning_rates)), learning_rates, rotation=45)
-		plt.yticks(range(len(discount_factors)), discount_factors)
-		plt.xlabel('Learning Rate')
-		plt.ylabel('Discount Factor')
+		plt.yticks(range(len(learning_rates)), learning_rates, rotation=45)
+		plt.xticks(range(len(discount_factors)), discount_factors)
+		plt.ylabel('Learning Rate')
+		plt.xlabel('Discount Factor')
 		plt.title(f'Performance Matrix (Average Reward) for {episodes} Episodes')
 		plt.savefig(f'matrix{episodes}.png')
-	return best_config
+	return best_config, best_performance
 
 
 if __name__ == "__main__":
 	# Run grid search and print best hyperparameters
-	best_config = grid_search_hyperparameters(10, 10)
-	# print("Best Hyperparameter Configuration:", best_config)
+	best_config, best_performance = grid_search_hyperparameters(10, 10)
+	print("Best Hyperparameter Configuration:", best_config)
+	print('Best Performance:', best_performance)

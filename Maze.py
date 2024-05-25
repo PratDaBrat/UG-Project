@@ -3,6 +3,7 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 class Maze:
 	def __init__(self, X, Y, sparsity, agents=1, food=1):
 		self.X = X
@@ -17,11 +18,12 @@ class Maze:
 		self.einit = {}
 		self.final = []
 		self.path = set()
-		self.plane = [[Agent(i, j, travelPenalty=-1) for i in range(X)] for j in range(Y)]
-		self.display = [[' ' for i in range(X)] for i in range(Y)]
 
-	def generate(self, WallPenalty=0, StatPenalty=0, FoodReward=0, sinit={}, einit={}):
 
+	def generate(self, MovePenalty=0, EnemyPenalty=0, StatPenalty=0, FoodReward=0, sinit={}, einit={}):
+
+		self.plane = [[Agent(i, j, travelPenalty=MovePenalty) for i in range(self.X)] for j in range(self.Y)]
+		self.display = [[' ' for i in range(self.X)] for i in range(self.Y)]
 		self.sinit = sinit
 		self.einit = einit
 
@@ -29,7 +31,7 @@ class Maze:
 			x = random.choice(range(0, self.X))
 			y = random.choice(range(0, self.Y))
 			if self.plane[y][x].group is None:
-				self.plane[y][x] = Agent(x, y, "wall", travelPenalty=WallPenalty)  #wall
+				self.plane[y][x] = Agent(x, y, "wall", travelPenalty=EnemyPenalty)  #enemy
 				self.walls.append(self.plane[y][x])
 
 		while len(self.s) < self.agents:

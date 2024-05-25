@@ -1,12 +1,12 @@
 from Maze import *
 from animate import makeVideo, makeQTV
-from constants import *
 from graph import *
 from tqdm import tqdm
 import numpy as np
 import time, os
 import matplotlib.pyplot as plt
 import pickle
+from constants import *
 
 
 def RL(M, session):
@@ -17,7 +17,7 @@ def RL(M, session):
 	start_q_table = None		# or filename using pickle to continue training from certain points
 
 	if start_q_table is None:
-		q_table = np.zeros(shape=[X, Y, 4])		# initialise q_table
+		q_table = np.zeros(shape=[M.X, M.Y, 4])		# initialise q_table
 		# q_table = np.random.uniform(high=2, low=1, size=[X, Y, 4]) 	# with zeros to discourage repeating moves
 	else:
 		with open(start_q_table, 'rb') as f:
@@ -40,7 +40,7 @@ def RL(M, session):
 		while not done and len(E) > 0:
 			i += 1
 			qx, qy = A.x, A.y
-			if np.random.random() < epsilon:
+			if np.random.random() > epsilon:
 				act = np.argmax(q_table[qy, qx])
 			else:
 				act = np.random.choice([0, 1, 2, 3])
